@@ -1,0 +1,55 @@
+language: cpp
+
+matrix:
+  include:
+
+  - os: linux
+    dist: xenial
+    compiler: gcc
+    addons:
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-9
+          - libxkbcommon-dev
+    before_install:
+      - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 100
+      - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 100
+      - gcc --version
+      - g++ --version
+    after_script:
+      - ldd dune/dune-copasi/build-cmake/src/dune_copasi
+
+  - os: osx
+    osx_image: xcode10.3
+    compiler: clang
+    install:
+      - export MACOSX_DEPLOYMENT_TARGET=10.14
+    after_script:
+      - otool -L dune/dune-copasi/build-cmake/src/dune_copasi
+
+before_script:
+  - wget "https://github.com/lkeegan/libsbml-static/releases/latest/download/libsbml-static-$TRAVIS_OS_NAME.tgz"
+  - tar xzvf libsbml-static-$TRAVIS_OS_NAME.tgz
+
+script:
+  - bash build.sh
+  - "./dune/dune-copasi/build-cmake/src/dune_copasi liver.ini"
+
+before_deploy: tar -zcvf dune-copasi-static-$TRAVIS_OS_NAME.tgz dune
+
+notifications:
+  email: false
+
+deploy:
+  provider: releases
+  api_key:
+    secure: ObRqB899689NOKAntHRjivSWFqyC+RC8J8mELT5P1PGmMk8nGv5873KKOTGYbSnEc1RT+APfI08N8NVgxiDpYHA98deYYHqZIDxv0wkj/ZZ3ZhvsGcGIpsBXNZx3GR2VLyQ1Irm0TdkgTi4T8QLurPV87I8n+sMpj1oNgZQiUiLHAXViJVoYfjbvW85wQ/EgD1+s9L6WTO6xyDUutQUopevc6TaAhgPDwr1JoaQIlLjNyqKEQCyelznmEVVuR0iZq9747EqlVZB/r3eEgfT1ZOdIDxjTprkGHeQlVer0qnlm6nhcxLbiPGwwZ/qjnaNJIAecGSZqOm7Q2JM8FU6qf4IYSomobdM+O3tegoEB29W9jz76AG6CK2d98iYI+a+mhCH5CkQsQiyU++Nr80xwL8UQ3nAROA28uRm8YNaGv6g+TZvChdR6fdW7+bUczAc9XuFfoS5Z43OiuAi2Iw4r1Sv2XFNl/HaiNRNUeBslsogzoUC9sAyM92SV4JP8cfwlJ9IlT5xFc+Rh37JJjba3h+P2zTZIwDJpHw1czPH3UTkD8iV8+lDWI9dzOu+zMemKbuP85/eIy5cKpKj2gMSK9fjfLnJC8SmOVI7RiTKTYvtZp9lYCEAWX2fGvPW20fY9tIBOewakLdNCL82tEmQiCToWfwR7YtHGNd6tcFKBNrc=
+  file: dune-copasi-static-$TRAVIS_OS_NAME.tgz
+  skip_cleanup: true
+  on:
+    repo: lkeegan/dune-copasi-static
+    tags: true
+    all_branches: true
+    overwrite: true

@@ -1,0 +1,40 @@
+# windows release build: mingw64 g++ from MSYS2 (currently 9.1.1) on Windows Server 2012 R2
+image:
+  - Visual Studio 2015
+install:
+  - set PATH=C:\msys64\usr\bin;%PATH%
+  # download muparser, gmp & libtiff as static libraries
+  - appveyor DownloadFile "https://github.com/lkeegan/libsbml-static/releases/latest/download/libsbml-static-windows.zip"
+  - 7z x libsbml-static-windows.zip
+  - mv muparser C:\msys64\home\appveyor\.
+  - mv gmp C:\msys64\home\appveyor\.
+  - mv libtiff C:\msys64\home\appveyor\.
+  - cp dune-logging.patch C:\msys64\home\appveyor\.
+
+build_script:
+  - cp build.sh C:\msys64\home\appveyor\.
+  - cp logging.patch C:\msys64\home\appveyor\.
+  - bash -l build.sh
+  # run it
+  - C:\msys64\home\appveyor\dune\dune-copasi\build-cmake\src\dune_copasi.exe liver.ini
+
+after_build:
+  - cd "C:\msys64\home\appveyor"
+  - 7z a %APPVEYOR_BUILD_FOLDER%\dune-copasi-static-windows.zip dune
+
+artifacts:
+  - path: dune-copasi-static-windows.zip
+    name: dune-copasi-static-windows
+
+deploy:
+  description: ''
+  provider: GitHub
+  artifact: dune-copasi-static-windows
+  auth_token:
+    secure: AzIgTar/Vk7S6hA8HAZAImacEIrbwmfrR6PJ+qHuAQHuLyPSAAcpI5rl/w6BumKp
+  draft: false
+  prerelease: false
+  force_update: true
+  on:
+    branch: master
+    APPVEYOR_REPO_TAG: true
