@@ -1,0 +1,13 @@
+diff --git a/dune/typetree/CMakeLists.txt b/dune/typetree/CMakeLists.txt
+index 1881387..25ced61 100644
+--- a/dune/typetree/CMakeLists.txt
++++ b/dune/typetree/CMakeLists.txt
+@@ -2,6 +2,7 @@ install(FILES
+   accumulate_static.hh
+   childextraction.hh
+   compositenode.hh
++  dynamicpowernode.hh
+   exceptions.hh
+   filteredcompositenode.hh
+   filters.hh
+

@@ -1,0 +1,17 @@
+diff --git a/dune/common/std/CMakeLists.txt b/dune/common/std/CMakeLists.txt
+index 41d4c3a6..94a2d7ac 100644
+--- a/dune/common/std/CMakeLists.txt
++++ b/dune/common/std/CMakeLists.txt
+@@ -1,9 +1,11 @@
+ install(
+   FILES
+   apply.hh
++  functional.hh
+   make_array.hh
+   memory.hh
+   optional.hh
+   type_traits.hh
+   utility.hh
++  variant.hh
+   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/dune/common/std)
+
