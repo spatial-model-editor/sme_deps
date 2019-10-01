@@ -16,9 +16,12 @@ WORKING_DIR=$(pwd)
 
 mkdir dune
 cd dune
-echo 'CMAKE_FLAGS=" -G '"'"'Unix Makefiles'"'"' -DGMPXX_INCLUDE_DIR:PATH='"$WORKING_DIR"'/gmp/include -DGMPXX_LIB:FILEPATH='"$WORKING_DIR"'/gmp/lib/libgmpxx.a -DGMP_LIB:FILEPATH='"$WORKING_DIR"'/gmp/lib/libgmp.a -DCMAKE_DISABLE_FIND_PACKAGE_QuadMath=TRUE -DBUILD_TESTING=OFF -DDUNE_USE_ONLY_STATIC_LIBS=ON -DCMAKE_BUILD_TYPE=Release -Dmuparser_ROOT='"$WORKING_DIR"'/muparser -DTIFF_ROOT='"$WORKING_DIR"'/libtiff -DF77=true "' > opts.txt
+echo 'CMAKE_FLAGS=" -G '"'"'Unix Makefiles'"'"' -DDUNE_MAX_LOGLEVEL=warning "' > opts.txt
+echo 'CMAKE_FLAGS+=" -DGMPXX_INCLUDE_DIR:PATH='"$WORKING_DIR"'/gmp/include -DGMPXX_LIB:FILEPATH='"$WORKING_DIR"'/gmp/lib/libgmpxx.a -DGMP_LIB:FILEPATH='"$WORKING_DIR"'/gmp/lib/libgmp.a"' >> opts.txt
+echo 'CMAKE_FLAGS+=" -Dmuparser_ROOT='"$WORKING_DIR"'/muparser -DTIFF_ROOT='"$WORKING_DIR"'/libtiff"' >> opts.txt
+echo 'CMAKE_FLAGS+=" -DCMAKE_DISABLE_FIND_PACKAGE_QuadMath=TRUE -DBUILD_TESTING=OFF -DDUNE_USE_ONLY_STATIC_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DF77=true"' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_CXX_FLAGS='"'"'-static-libstdc++'"'"' "' >> opts.txt
-# on windows add flags to support large object files
+# on windows add flags to support large object files & statically link libgcc.
 # https://stackoverflow.com/questions/16596876/object-file-has-too-many-sections
 if [[ $MSYSTEM ]]; then
 	echo 'CMAKE_FLAGS+=" -DCMAKE_CXX_FLAGS='"'"'-Wa,-mbig-obj -static -static-libgcc -static-libstdc++'"'"' "' >> opts.txt
@@ -30,14 +33,10 @@ for repo in dune-common dune-typetree dune-pdelab dune-multidomaingrid
 do
   git clone -b support/dune-copasi --depth 1 --recursive https://gitlab.dune-project.org/santiago.ospina/$repo.git
 done
-for repo in core/dune-geometry core/dune-istl core/dune-localfunctions staging/dune-functions staging/dune-uggrid staging/dune-logging
+for repo in core/dune-geometry core/dune-istl core/dune-localfunctions staging/dune-functions staging/dune-uggrid staging/dune-logging core/dune-grid
 do
   git clone -b $DUNE_VERSION --depth 1 --recursive https://gitlab.dune-project.org/$repo.git
 done
-
-# temporarily use fork of dunegrid to fix gmshreader on windows:
-# todo: when fixed on master, add core/dune-grid back to list above
-git clone -b gmsh_reader_fix --depth 1 --recursive https://gitlab.dune-project.org/liam.keegan/dune-grid.git
 
 # on windows, symlinks from git repos don't work
 # msys git replaces symlinks with a text file containing the linked file location
@@ -76,7 +75,7 @@ git apply ../../dune-logging.patch
 cd ../
 
 # download dune-copasi
-git clone -b 2-include-more-options-to-initializate-stetes --depth 1 --recursive https://gitlab.dune-project.org/copasi/dune-copasi.git
+git clone -b master --depth 1 --recursive https://gitlab.dune-project.org/copasi/dune-copasi.git
 
 ./dune-common/bin/dunecontrol --module=dune-copasi printdeps
 ./dune-common/bin/dunecontrol --opts=opts.txt --module=dune-copasi all
