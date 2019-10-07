@@ -19,7 +19,7 @@ matrix:
       - gcc --version
       - g++ --version
     after_script:
-      - ldd dune/dune-copasi/build-cmake/src/dune_copasi
+      - ldd dune-copasi/build-cmake/src/dune_copasi
 
   - os: osx
     osx_image: xcode10.3
@@ -27,7 +27,7 @@ matrix:
     install:
       - export MACOSX_DEPLOYMENT_TARGET=10.14
     after_script:
-      - otool -L dune/dune-copasi/build-cmake/src/dune_copasi
+      - otool -L dune-copasi/build-cmake/src/dune_copasi
 
 before_script:
   - wget "https://github.com/lkeegan/libsbml-static/releases/latest/download/libsbml-static-$TRAVIS_OS_NAME.tgz"
@@ -35,7 +35,6 @@ before_script:
 
 script:
   - bash build.sh
-  - "./dune/dune-copasi/build-cmake/src/dune_copasi liver.ini"
 
 before_deploy: tar -zcvf dune-copasi-static-$TRAVIS_OS_NAME.tgz dune
 

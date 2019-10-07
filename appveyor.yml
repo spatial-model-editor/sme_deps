@@ -9,14 +9,10 @@ install:
   - mv muparser C:\msys64\home\appveyor\.
   - mv gmp C:\msys64\home\appveyor\.
   - mv libtiff C:\msys64\home\appveyor\.
-  - cp dune-logging.patch C:\msys64\home\appveyor\.
 
 build_script:
   - cp build.sh C:\msys64\home\appveyor\.
-  - cp logging.patch C:\msys64\home\appveyor\.
   - bash -l build.sh
-  # run it
-  - C:\msys64\home\appveyor\dune\dune-copasi\build-cmake\src\dune_copasi.exe liver.ini
 
 after_build:
   - cd "C:\msys64\home\appveyor"

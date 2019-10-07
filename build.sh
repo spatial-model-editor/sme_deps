@@ -12,13 +12,13 @@ g++ --version
 gcc --version
 cmake --version
 
-WORKING_DIR=$(pwd)
+WDIR=$(pwd)
 
-mkdir dune
-cd dune
-echo 'CMAKE_FLAGS=" -G '"'"'Unix Makefiles'"'"' -DDUNE_MAX_LOGLEVEL=warning "' > opts.txt
-echo 'CMAKE_FLAGS+=" -DGMPXX_INCLUDE_DIR:PATH='"$WORKING_DIR"'/gmp/include -DGMPXX_LIB:FILEPATH='"$WORKING_DIR"'/gmp/lib/libgmpxx.a -DGMP_LIB:FILEPATH='"$WORKING_DIR"'/gmp/lib/libgmp.a"' >> opts.txt
-echo 'CMAKE_FLAGS+=" -Dmuparser_ROOT='"$WORKING_DIR"'/muparser -DTIFF_ROOT='"$WORKING_DIR"'/libtiff"' >> opts.txt
+# in future for release mode consider -DDUNE_MAX_LOGLEVEL=off
+echo 'CMAKE_FLAGS=" -G '"'"'Unix Makefiles'"'"' -DDUNE_MAX_LOGLEVEL=trace "' > opts.txt
+echo 'CMAKE_FLAGS+=" -DCMAKE_INSTALL_PREFIX='"$WDIR"'/dune "' >> opts.txt
+echo 'CMAKE_FLAGS+=" -DGMPXX_INCLUDE_DIR:PATH='"$WDIR"'/gmp/include -DGMPXX_LIB:FILEPATH='"$WDIR"'/gmp/lib/libgmpxx.a -DGMP_LIB:FILEPATH='"$WDIR"'/gmp/lib/libgmp.a"' >> opts.txt
+echo 'CMAKE_FLAGS+=" -Dmuparser_ROOT='"$WDIR"'/muparser -DTIFF_ROOT='"$WDIR"'/libtiff"' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_DISABLE_FIND_PACKAGE_QuadMath=TRUE -DBUILD_TESTING=OFF -DDUNE_USE_ONLY_STATIC_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DF77=true"' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_CXX_FLAGS='"'"'-static-libstdc++'"'"' "' >> opts.txt
 # on windows add flags to support large object files & statically link libgcc.
@@ -28,60 +28,51 @@ if [[ $MSYSTEM ]]; then
 fi
 echo 'MAKE_FLAGS="-j2 VERBOSE=1"' >> opts.txt
 
-# download Dune dependencies
-for repo in dune-common dune-typetree dune-pdelab dune-multidomaingrid
-do
-  git clone -b support/dune-copasi --depth 1 --recursive https://gitlab.dune-project.org/santiago.ospina/$repo.git
-done
-for repo in core/dune-geometry core/dune-istl core/dune-localfunctions staging/dune-functions staging/dune-uggrid staging/dune-logging core/dune-grid
-do
-  git clone -b $DUNE_VERSION --depth 1 --recursive https://gitlab.dune-project.org/$repo.git
-done
+export DUNE_OPTIONS_FILE="opts.txt"
+export DUNECONTROL=./dune-common/bin/dunecontrol
 
-# on windows, symlinks from git repos don't work
-# msys git replaces symlinks with a text file containing the linked file location
-# so here we identify all such files, and replace them with the linked file
-# note msys defines MSYSTEM variable: use this to check if we are on msys/windows
-if [[ $MSYSTEM ]]; then
-	rootdir=$(pwd)
-		for repo in $(ls -d dune-*/)
-		do
-			echo "repo: $repo"
-			cd $rootdir/$repo
-			for f in $(git ls-files -s | awk '/120000/{print $4}')
-			do
-				dname=$(dirname "$f")
-				fname=$(basename "$f")
-				relf=$(cat $f)
-				src="$rootdir/$repo/$dname/$relf"
-				dst="$rootdir/$repo/$dname/$fname"
-				echo "  - copying $src --> $dst"
-				cp $src $dst
-			done
-		done
-	cd $rootdir
-fi
-
-# patch cmake macro to avoid build failure when fortran compiler not found, e.g. on osx
-cd dune-common
-wget https://gist.githubusercontent.com/lkeegan/059984b71f8aeb0bbc062e85ad7ee377/raw/e9c7af42c47fe765547e60833a72b5ff1e78123c/cmake-patch.txt
-echo '' >> cmake-patch.txt
-git apply cmake-patch.txt
-cd ../
-
-# patch dune-logging cmake to not define FMT_SHARED
-cd dune-logging
-git apply ../../dune-logging.patch
-cd ../
-
-# download dune-copasi
+# download & setup dune-copasi build
 git clone -b master --depth 1 --recursive https://gitlab.dune-project.org/copasi/dune-copasi.git
+bash dune-copasi/.ci/setup.sh
 
-./dune-common/bin/dunecontrol --module=dune-copasi printdeps
-./dune-common/bin/dunecontrol --opts=opts.txt --module=dune-copasi all
+# remove testtools
+rm -rf dune-testtools
+# patch make install for uggrid
+cd dune-uggrid
+git apply ../uggrid-patch.diff
+cd ..
+cd dune-copasi
+git apply ../copasi-patch.diff
+cd ..
+cd dune-pdelab
+git apply ../pdelab-patch.diff
+cd ..
+cd dune-common
+git apply ../common-patch.diff
+cd ..
 
+# build & test
+bash dune-copasi/.ci/build.sh
+bash dune-copasi/.ci/unit_tests.sh
+bash dune-copasi/.ci/system_tests.sh
+
+# install dune-copasi
+$DUNECONTROL make install
+
+# manually add config.h & FC.h headers for now...
+cp dune-copasi/build-cmake/config.h $WDIR/dune/include/.
+cp dune-copasi/build-cmake/FC.h $WDIR/dune/include/.
+
+# remove docs & binaries
+rm -rf dune/bin
+rm -rf dune/share
+
+ls dune
+ls dune/*
+du -sh dune
+
+# print linker flags
 cat dune-copasi/build-cmake/src/CMakeFiles/dune_copasi.dir/flags.make
-
 if [[ $MSYSTEM ]]; then
 	cat dune-copasi/build-cmake/src/CMakeFiles/dune_copasi.dir/linklibs.rsp
 	ldd dune-copasi/build-cmake/src/dune_copasi.exe

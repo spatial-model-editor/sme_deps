@@ -1,0 +1,12 @@
+diff --git a/dune/uggrid/parallel/ppif/CMakeLists.txt b/dune/uggrid/parallel/ppif/CMakeLists.txt
+index 560a20f..a9d4454 100644
+--- a/dune/uggrid/parallel/ppif/CMakeLists.txt
++++ b/dune/uggrid/parallel/ppif/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ install(FILES
+   ppifcontext.hh
+-  ppifcontextimpl.hh
++  ppifcontext.cc
+   ppiftypes.hh
+   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/dune/uggrid/parallel/ppif)
+
