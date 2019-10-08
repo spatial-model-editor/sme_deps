@@ -3,12 +3,13 @@ image:
   - Visual Studio 2015
 install:
   - set PATH=C:\msys64\usr\bin;%PATH%
-  # download muparser, gmp & libtiff as static libraries
+  # download muparser, gmp, fmt & libtiff as static libraries
   - appveyor DownloadFile "https://github.com/lkeegan/libsbml-static/releases/latest/download/libsbml-static-windows.zip"
   - 7z x libsbml-static-windows.zip
   - mv muparser C:\msys64\home\appveyor\.
   - mv gmp C:\msys64\home\appveyor\.
   - mv libtiff C:\msys64\home\appveyor\.
+  - mv fmt C:\msys64\home\appveyor\.
 
 build_script:
   - cp build.sh C:\msys64\home\appveyor\.

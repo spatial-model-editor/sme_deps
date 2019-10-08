@@ -16,8 +16,10 @@ WDIR=$(pwd)
 
 # in future for release mode consider -DDUNE_MAX_LOGLEVEL=off
 echo 'CMAKE_FLAGS=" -G '"'"'Unix Makefiles'"'"' -DDUNE_MAX_LOGLEVEL=trace "' > opts.txt
+echo 'CMAKE_FLAGS+=" -DCMAKE_CXX_STANDARD=17 "' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_INSTALL_PREFIX='"$WDIR"'/dune "' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DGMPXX_INCLUDE_DIR:PATH='"$WDIR"'/gmp/include -DGMPXX_LIB:FILEPATH='"$WDIR"'/gmp/lib/libgmpxx.a -DGMP_LIB:FILEPATH='"$WDIR"'/gmp/lib/libgmp.a"' >> opts.txt
+echo 'CMAKE_FLAGS+=" -Dfmt_ROOT='"$WDIR"'/fmt"' >> opts.txt
 echo 'CMAKE_FLAGS+=" -Dmuparser_ROOT='"$WDIR"'/muparser -DTIFF_ROOT='"$WDIR"'/libtiff"' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_DISABLE_FIND_PACKAGE_QuadMath=TRUE -DBUILD_TESTING=OFF -DDUNE_USE_ONLY_STATIC_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DF77=true"' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_CXX_FLAGS='"'"'-static-libstdc++'"'"' "' >> opts.txt
