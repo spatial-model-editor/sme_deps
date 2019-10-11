@@ -22,11 +22,11 @@ echo 'CMAKE_FLAGS+=" -DGMPXX_INCLUDE_DIR:PATH='"$WDIR"'/gmp/include -DGMPXX_LIB:
 echo 'CMAKE_FLAGS+=" -Dfmt_ROOT='"$WDIR"'/fmt"' >> opts.txt
 echo 'CMAKE_FLAGS+=" -Dmuparser_ROOT='"$WDIR"'/muparser -DTIFF_ROOT='"$WDIR"'/libtiff"' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_DISABLE_FIND_PACKAGE_QuadMath=TRUE -DBUILD_TESTING=OFF -DDUNE_USE_ONLY_STATIC_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DF77=true"' >> opts.txt
-echo 'CMAKE_FLAGS+=" -DCMAKE_CXX_FLAGS='"'"'-static-libstdc++'"'"' "' >> opts.txt
+echo 'CMAKE_FLAGS+=" -DCMAKE_CXX_FLAGS='"'"'-fvisibility=hidden -fpic -static-libstdc++'"'"' "' >> opts.txt
 # on windows add flags to support large object files & statically link libgcc.
 # https://stackoverflow.com/questions/16596876/object-file-has-too-many-sections
 if [[ $MSYSTEM ]]; then
-	echo 'CMAKE_FLAGS+=" -DCMAKE_CXX_FLAGS='"'"'-Wa,-mbig-obj -static -static-libgcc -static-libstdc++'"'"' "' >> opts.txt
+	echo 'CMAKE_FLAGS+=" -DCMAKE_CXX_FLAGS='"'"'-Wa,-mbig-obj -fvisibility=hidden -fpic -static -static-libgcc -static-libstdc++'"'"' "' >> opts.txt
 fi
 echo 'MAKE_FLAGS="-j2 VERBOSE=1"' >> opts.txt
 
