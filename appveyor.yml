@@ -10,7 +10,6 @@ install:
   - mv gmp C:\msys64\home\appveyor\.
   - mv libtiff C:\msys64\home\appveyor\.
   - mv fmt C:\msys64\home\appveyor\.
-  - cp *.diff C:\msys64\home\appveyor\.
 
 build_script:
   - cp build.sh C:\msys64\home\appveyor\.
