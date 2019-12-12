@@ -31,10 +31,10 @@ matrix:
 
 before_script:
   - wget "https://github.com/lkeegan/libsbml-static/releases/latest/download/libsbml-static-$TRAVIS_OS_NAME.tgz"
-  - tar xzvf libsbml-static-$TRAVIS_OS_NAME.tgz
+  - sudo tar xzvf libsbml-static-$TRAVIS_OS_NAME.tgz -C /
 
 script:
-  - bash build.sh
+  - bash build.sh "/opt/libs"
 
 before_deploy: tar -zcvf dune-copasi-static-$TRAVIS_OS_NAME.tgz dune
 

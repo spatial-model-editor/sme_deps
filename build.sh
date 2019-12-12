@@ -1,3 +1,6 @@
+#!/bin/bash
+DEPSDIR=${1:-"C:\libs"}
+
 DUNE_COPASI_VERSION="v0.1.0"
 
 # make sure we get the right mingw64 version of g++ on appveyor
@@ -13,17 +16,17 @@ g++ --version
 gcc --version
 cmake --version
 
+DEPSDIR=${1:-"C:/libs"}
 WDIR=$(pwd)
 
 echo 'CMAKE_FLAGS=" -G '"'"'Unix Makefiles'"'"'"' > opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_CXX_STANDARD=17 "' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_INSTALL_PREFIX='"$WDIR"'/dune "' >> opts.txt
-echo 'CMAKE_FLAGS+=" -DGMPXX_INCLUDE_DIR:PATH='"$WDIR"'/gmp/include"' >> opts.txt
-echo 'CMAKE_FLAGS+=" -DGMPXX_LIB:FILEPATH='"$WDIR"'/gmp/lib/libgmpxx.a"' >> opts.txt
-echo 'CMAKE_FLAGS+=" -DGMP_LIB:FILEPATH='"$WDIR"'/gmp/lib/libgmp.a"' >> opts.txt
-echo 'CMAKE_FLAGS+=" -Dfmt_ROOT='"$WDIR"'/fmt"' >> opts.txt
-echo 'CMAKE_FLAGS+=" -Dmuparser_ROOT='"$WDIR"'/muparser"' >> opts.txt
-echo 'CMAKE_FLAGS+=" -DTIFF_ROOT='"$WDIR"'/libtiff"' >> opts.txt
+echo 'CMAKE_FLAGS+=" -DGMPXX_INCLUDE_DIR:PATH='"$DEPSDIR"'/include"' >> opts.txt
+echo 'CMAKE_FLAGS+=" -DGMPXX_LIB:FILEPATH='"$DEPSDIR"'/lib/libgmpxx.a"' >> opts.txt
+echo 'CMAKE_FLAGS+=" -DGMP_LIB:FILEPATH='"$DEPSDIR"'/lib/libgmp.a"' >> opts.txt
+echo 'CMAKE_FLAGS+=" -DCMAKE_PREFIX_PATH='"$DEPSDIR"'"' >> opts.txt
+echo 'CMAKE_FLAGS+=" -Dfmt_ROOT='"$DEPSDIR"'"' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_DISABLE_FIND_PACKAGE_QuadMath=TRUE -DBUILD_TESTING=OFF -DDUNE_USE_ONLY_STATIC_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DF77=true"' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_CXX_FLAGS='"'"'-fvisibility=hidden -fpic -static-libstdc++'"'"' "' >> opts.txt
 # on windows add flags to support large object files & statically link libgcc.
@@ -50,11 +53,6 @@ bash dune-copasi/.ci/system_tests.sh
 
 # install dune-copasi
 $DUNECONTROL make install
-
-# manually add config.h & FC.h headers for now...
-# todo: check if this is the right thing to do?
-cp dune-copasi/build-cmake/config.h $WDIR/dune/include/.
-cp dune-copasi/build-cmake/FC.h $WDIR/dune/include/.
 
 # remove docs & binaries
 rm -rf dune/bin

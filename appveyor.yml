@@ -6,10 +6,10 @@ install:
   # download muparser, gmp, fmt & libtiff as static libraries
   - appveyor DownloadFile "https://github.com/lkeegan/libsbml-static/releases/latest/download/libsbml-static-windows.zip"
   - 7z x libsbml-static-windows.zip
-  - mv muparser C:\msys64\home\appveyor\.
-  - mv gmp C:\msys64\home\appveyor\.
-  - mv libtiff C:\msys64\home\appveyor\.
-  - mv fmt C:\msys64\home\appveyor\.
+  - mkdir C:\libs
+  - mv include C:\libs\.
+  - mv lib C:\libs\.
+  - dir "C:\libs"
 
 build_script:
   - cp build.sh C:\msys64\home\appveyor\.
