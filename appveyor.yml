@@ -13,6 +13,7 @@ install:
 
 build_script:
   - cp build.sh C:\msys64\home\appveyor\.
+  - cp diff.txt C:\msys64\home\appveyor\.
   - bash -l build.sh
 
 after_build:

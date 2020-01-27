@@ -43,17 +43,24 @@ echo 'MAKE_FLAGS="-j2 VERBOSE=1"' >> opts.txt
 export DUNE_OPTIONS_FILE="opts.txt"
 export DUNECONTROL=./dune-common/bin/dunecontrol
 
-# download & setup dune-copasi build
+# clone dune-copasi
 git clone -b ${DUNE_COPASI_VERSION} --depth 1 --recursive https://gitlab.dune-project.org/copasi/dune-copasi.git
+
+# temporary fix: apply diff to remove unused parts of library to enable windows compilation
+cd dune-copasi
+git apply ../diff.txt
+cd ..
+
+# setup build
 bash dune-copasi/.ci/setup.sh
 
 # remove testtools
 rm -rf dune-testtools
 
-# build & test
+# build
 bash dune-copasi/.ci/build.sh
-bash dune-copasi/.ci/unit_tests.sh
-bash dune-copasi/.ci/system_tests.sh
+#bash dune-copasi/.ci/unit_tests.sh
+#bash dune-copasi/.ci/system_tests.sh
 
 # install dune-copasi
 $DUNECONTROL make install
@@ -67,8 +74,8 @@ ls dune/*
 du -sh dune
 
 # print linker flags
-cat dune-copasi/build-cmake/src/CMakeFiles/dune_copasi_md.dir/flags.make
-if [[ $MSYSTEM ]]; then
-	cat dune-copasi/build-cmake/src/CMakeFiles/dune_copasi_md.dir/linklibs.rsp
-	ldd dune-copasi/build-cmake/src/dune_copasi_md.exe
-fi
+#cat dune-copasi/build-cmake/src/CMakeFiles/dune_copasi_md.dir/flags.make
+#if [[ $MSYSTEM ]]; then
+#	cat dune-copasi/build-cmake/src/CMakeFiles/dune_copasi_md.dir/linklibs.rsp
+#	ldd dune-copasi/build-cmake/src/dune_copasi_md.exe
+#fi
