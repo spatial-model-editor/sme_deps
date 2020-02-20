@@ -1,7 +1,7 @@
 #!/bin/bash
 DEPSDIR=${1:-"C:\libs"}
 
-DUNE_COPASI_VERSION="20-add-special-membranes-for-species-that-only-pass-through-to-it-but-not-diffuse"
+DUNE_COPASI_VERSION="v0.2.0"
 
 # make sure we get the right mingw64 version of g++ on appveyor
 PATH=/mingw64/bin:$PATH
@@ -31,6 +31,8 @@ echo 'CMAKE_FLAGS+=" -Dfmt_ROOT='"$DEPSDIR"' "' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DDUNE_PYTHON_VIRTUALENV_SETUP=0 -DDUNE_PYTHON_ALLOW_GET_PIP=0 "' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_DISABLE_FIND_PACKAGE_QuadMath=TRUE -DBUILD_TESTING=OFF "' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DDUNE_USE_ONLY_STATIC_LIBS=ON -DF77=true"' >> opts.txt
+echo 'CMAKE_FLAGS+=" -DDUNE_COPASI_SD_EXECUTABLE=ON"' >> opts.txt
+echo 'CMAKE_FLAGS+=" -DDUNE_COPASI_MD_EXECUTABLE=ON"' >> opts.txt
 if [[ $MSYSTEM ]]; then
 	# on windows add flags to support large object files & statically link libgcc.
 	# https://stackoverflow.com/questions/16596876/object-file-has-too-many-sections
@@ -45,11 +47,6 @@ export DUNECONTROL=./dune-common/bin/dunecontrol
 
 # clone dune-copasi
 git clone -b ${DUNE_COPASI_VERSION} --depth 1 --recursive https://gitlab.dune-project.org/copasi/dune-copasi.git
-
-# temporary fix: apply diff to remove unused parts of library to enable windows compilation
-cd dune-copasi
-git apply ../diff.txt
-cd ..
 
 # setup build
 bash dune-copasi/.ci/setup.sh
