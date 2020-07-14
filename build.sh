@@ -1,7 +1,7 @@
 #!/bin/bash
 DEPSDIR=${1:-"C:\libs"}
 
-DUNE_COPASI_VERSION="v0.2.0"
+DUNE_COPASI_VERSION="dune_logging_patch_fmt7"
 
 # make sure we get the right mingw64 version of g++ on appveyor
 PATH=/mingw64/bin:$PATH
