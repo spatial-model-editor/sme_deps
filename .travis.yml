@@ -1,51 +1,109 @@
+version: ~> 1.0
+os: linux
+dist: xenial
 language: cpp
+env:
+  global:
+    - MSYS_URL='https://github.com/msys2/msys2-installer/releases/download/2020-07-19/msys2-base-x86_64-20200719.sfx.exe'
 
-matrix:
+jobs:
   include:
-
-  - os: linux
-    dist: xenial
-    compiler: gcc
-    addons:
-      apt:
-        sources:
-          - ubuntu-toolchain-r-test
-        packages:
-          - g++-9
-          - libxkbcommon-dev
-    before_install:
-      - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 100
-      - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 100
-      - gcc --version
-      - g++ --version
-    after_script:
-      #- ldd dune-copasi/build-cmake/src/dune_copasi_md
-
-  - os: osx
-    osx_image: xcode10.3
-    compiler: clang
-    install:
-      - export MACOSX_DEPLOYMENT_TARGET=10.14
-    after_script:
-      #- otool -L dune-copasi/build-cmake/src/dune_copasi_md
-
-before_script:
-  - wget "https://github.com/lkeegan/libsbml-static/releases/latest/download/libsbml-static-$TRAVIS_OS_NAME.tgz"
-  - sudo tar xzvf libsbml-static-$TRAVIS_OS_NAME.tgz -C /
+    - name: "linux"
+      os: linux
+      dist: xenial
+      compiler: gcc
+      env:
+        - INSTALL_PREFIX="/opt/libs"
+        - BUILD_SHELL='bash'
+        - SUDOCMD='sudo'
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-9
+      before_install:
+        - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 100
+        - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 100
+        - gcc --version
+        - g++ --version
+      before_script:
+        - echo "INSTALL_PREFIX=$INSTALL_PREFIX" > source.sh
+        - echo "SUDOCMD=$SUDOCMD" >> source.sh
+        - cat source.sh
+      after_script:
+        #- ldd dune-copasi/build-cmake/src/dune_copasi_md
+    - name: "osx"
+      os: osx
+      osx_image: xcode11.3
+      compiler: clang
+      env:
+        - INSTALL_PREFIX="/opt/libs"
+        - BUILD_SHELL='bash'
+        - SUDOCMD='sudo'
+        - MACOSX_DEPLOYMENT_TARGET=10.14
+      before_script:
+        - echo "INSTALL_PREFIX=$INSTALL_PREFIX" > source.sh
+        - echo "SUDOCMD=$SUDOCMD" >> source.sh
+        - cat source.sh
+    - name: "win64"
+      os: windows
+      env:
+        - INSTALL_PREFIX="/c/libs"
+        - SUDOCMD=''
+      install:
+        # https://www.msys2.org/docs/ci/
+        - wget $MSYS_URL -O msys2.exe
+        - ./msys2.exe -y -oC:\\
+        - export MSYS_SHELL='cmd //C RefreshEnv.cmd & C:\\msys64\\msys2_shell.cmd -defterm -no-start -here -msys -lc'
+        - $MSYS_SHELL ' '
+        - $MSYS_SHELL 'pacman --noconfirm -Syuu'
+        - $MSYS_SHELL 'pacman --noconfirm -Syuu'
+        - $MSYS_SHELL "pacman --noconfirm -Syuu mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake git make"
+        - export BUILD_SHELL='cmd //C RefreshEnv.cmd & C:\\msys64\\msys2_shell.cmd -defterm -no-start -here -mingw64 -l'
+        - taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
+      before_script:
+        - echo "INSTALL_PREFIX=$INSTALL_PREFIX" > source.sh
+        - echo 'SUDOCMD=""' >> source.sh
+        - cat source.sh
+      after_script:
+        #- otool -L dune-copasi/build-cmake/src/dune_copasi_md
+    - name: "win32"
+      os: windows
+      env:
+        - INSTALL_PREFIX="/c/libs"
+        - SUDOCMD=''
+      install:
+        # https://www.msys2.org/docs/ci/
+        - wget $MSYS_URL -O msys2.exe
+        - ./msys2.exe -y -oC:\\
+        - export MSYS_SHELL='cmd //C RefreshEnv.cmd & C:\\msys64\\msys2_shell.cmd -defterm -no-start -here -msys -lc'
+        - $MSYS_SHELL ' '
+        - $MSYS_SHELL 'pacman --noconfirm -Syuu'
+        - $MSYS_SHELL 'pacman --noconfirm -Syuu'
+        - $MSYS_SHELL "pacman --noconfirm -Syuu mingw-w64-i686-gcc mingw-w64-i686-cmake git make"
+        - export BUILD_SHELL='cmd //C RefreshEnv.cmd & C:\\msys64\\msys2_shell.cmd -defterm -no-start -here -mingw32 -l'
+        - taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
+      before_script:
+        - echo "INSTALL_PREFIX=$INSTALL_PREFIX" > source.sh
+        - echo 'SUDOCMD=""' >> source.sh
+        - cat source.sh
 
 script:
-  - bash build.sh "/opt/libs"
+  - wget "https://github.com/lkeegan/libsbml-static/releases/latest/download/libsbml-static-$TRAVIS_JOB_NAME.tgz"
+  - $SUDOCMD tar xzvf libsbml-static-$TRAVIS_JOB_NAME.tgz -C /
+  - $BUILD_SHELL build.sh
 
-before_deploy: tar -zcvf dune-copasi-static-$TRAVIS_OS_NAME.tgz dune
+before_deploy: tar -zcvf dune-copasi-static-$TRAVIS_JOB_NAME.tgz $INSTALL_PREFIX/dune/*
 
 notifications:
   email: false
 
 deploy:
   provider: releases
-  api_key:
+  token:
     secure: ObRqB899689NOKAntHRjivSWFqyC+RC8J8mELT5P1PGmMk8nGv5873KKOTGYbSnEc1RT+APfI08N8NVgxiDpYHA98deYYHqZIDxv0wkj/ZZ3ZhvsGcGIpsBXNZx3GR2VLyQ1Irm0TdkgTi4T8QLurPV87I8n+sMpj1oNgZQiUiLHAXViJVoYfjbvW85wQ/EgD1+s9L6WTO6xyDUutQUopevc6TaAhgPDwr1JoaQIlLjNyqKEQCyelznmEVVuR0iZq9747EqlVZB/r3eEgfT1ZOdIDxjTprkGHeQlVer0qnlm6nhcxLbiPGwwZ/qjnaNJIAecGSZqOm7Q2JM8FU6qf4IYSomobdM+O3tegoEB29W9jz76AG6CK2d98iYI+a+mhCH5CkQsQiyU++Nr80xwL8UQ3nAROA28uRm8YNaGv6g+TZvChdR6fdW7+bUczAc9XuFfoS5Z43OiuAi2Iw4r1Sv2XFNl/HaiNRNUeBslsogzoUC9sAyM92SV4JP8cfwlJ9IlT5xFc+Rh37JJjba3h+P2zTZIwDJpHw1czPH3UTkD8iV8+lDWI9dzOu+zMemKbuP85/eIy5cKpKj2gMSK9fjfLnJC8SmOVI7RiTKTYvtZp9lYCEAWX2fGvPW20fY9tIBOewakLdNCL82tEmQiCToWfwR7YtHGNd6tcFKBNrc=
-  file: dune-copasi-static-$TRAVIS_OS_NAME.tgz
+  file: dune-copasi-static-$TRAVIS_JOB_NAME.tgz
   skip_cleanup: true
   on:
     repo: lkeegan/dune-copasi-static

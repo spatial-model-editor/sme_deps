@@ -1,10 +1,10 @@
 #!/bin/bash
-DEPSDIR=${1:-"C:\libs"}
+source source.sh
 
-DUNE_COPASI_VERSION="dune_logging_patch_fmt7"
+DEPSDIR=${INSTALL_PREFIX}
 
-# make sure we get the right mingw64 version of g++ on appveyor
-PATH=/mingw64/bin:$PATH
+DUNE_COPASI_VERSION="fmt7_and_gxx_10_fixes"
+
 echo "DUNE_COPASI_VERSION: ${DUNE_COPASI_VERSION}"
 echo "PATH: $PATH"
 echo "MSYSTEM: $MSYSTEM"
@@ -16,13 +16,10 @@ g++ --version
 gcc --version
 cmake --version
 
-DEPSDIR=${1:-"C:/libs"}
-WDIR=$(pwd)
-
 echo 'CMAKE_FLAGS=" -G '"'"'Unix Makefiles'"'"'"' > opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_CXX_STANDARD=17 "' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Release "' >> opts.txt
-echo 'CMAKE_FLAGS+=" -DCMAKE_INSTALL_PREFIX='"$WDIR"'/dune "' >> opts.txt
+echo 'CMAKE_FLAGS+=" -DCMAKE_INSTALL_PREFIX='"$DEPSDIR"'/dune "' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DGMPXX_INCLUDE_DIR:PATH='"$DEPSDIR"'/include "' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DGMPXX_LIB:FILEPATH='"$DEPSDIR"'/lib/libgmpxx.a "' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DGMP_LIB:FILEPATH='"$DEPSDIR"'/lib/libgmp.a "' >> opts.txt
@@ -60,15 +57,15 @@ bash dune-copasi/.ci/build.sh
 #bash dune-copasi/.ci/system_tests.sh
 
 # install dune-copasi
-$DUNECONTROL make install
+$DUNECONTROL bexec $SUDOCMD make install
 
 # remove docs & binaries
-rm -rf dune/bin
-rm -rf dune/share
+$SUDOCMD rm -rf $DEPSDIR/dune/bin
+$SUDOCMD rm -rf $DEPSDIR/dune/share
 
-ls dune
-ls dune/*
-du -sh dune
+ls $DEPSDIR/dune
+ls $DEPSDIR/dune/*
+du -sh $DEPSDIR/dune
 
 # print linker flags
 #cat dune-copasi/build-cmake/src/CMakeFiles/dune_copasi_md.dir/flags.make
