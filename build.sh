@@ -3,7 +3,7 @@ source source.sh
 
 DEPSDIR=${INSTALL_PREFIX}
 
-DUNE_COPASI_VERSION="fmt7_and_gxx_10_fixes"
+DUNE_COPASI_VERSION="allow_no_vtk_output"
 
 echo "DUNE_COPASI_VERSION: ${DUNE_COPASI_VERSION}"
 echo "PATH: $PATH"
