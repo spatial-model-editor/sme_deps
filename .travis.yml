@@ -4,7 +4,7 @@ dist: xenial
 language: cpp
 env:
   global:
-    - MSYS_URL='https://github.com/msys2/msys2-installer/releases/download/2020-07-20/msys2-base-x86_64-20200720.sfx.exe'
+    - MSYS_URL='https://github.com/msys2/msys2-installer/releases/download/2020-09-03/msys2-base-x86_64-20200903.sfx.exe'
 
 jobs:
   include:
@@ -30,6 +30,7 @@ jobs:
       before_script:
         - echo "INSTALL_PREFIX=$INSTALL_PREFIX" > source.sh
         - echo "SUDOCMD=$SUDOCMD" >> source.sh
+        - echo "USE_FALLBACK_FILESYSTEM=OFF" >> source.sh
         - cat source.sh
       after_script:
         #- ldd dune-copasi/build-cmake/src/dune_copasi_md
@@ -45,6 +46,7 @@ jobs:
       before_script:
         - echo "INSTALL_PREFIX=$INSTALL_PREFIX" > source.sh
         - echo "SUDOCMD=$SUDOCMD" >> source.sh
+        - echo "USE_FALLBACK_FILESYSTEM=ON" >> source.sh
         - cat source.sh
     - name: "win64"
       os: windows
@@ -66,6 +68,7 @@ jobs:
       before_script:
         - echo "INSTALL_PREFIX=$INSTALL_PREFIX" > source.sh
         - echo 'SUDOCMD=""' >> source.sh
+        - echo "USE_FALLBACK_FILESYSTEM=OFF" >> source.sh
         - cat source.sh
       after_script:
         #- otool -L dune-copasi/build-cmake/src/dune_copasi_md
@@ -89,6 +92,7 @@ jobs:
       before_script:
         - echo "INSTALL_PREFIX=$INSTALL_PREFIX" > source.sh
         - echo 'SUDOCMD=""' >> source.sh
+        - echo "USE_FALLBACK_FILESYSTEM=OFF" >> source.sh
         - cat source.sh
 
 script:
@@ -106,9 +110,10 @@ deploy:
   token:
     secure: ObRqB899689NOKAntHRjivSWFqyC+RC8J8mELT5P1PGmMk8nGv5873KKOTGYbSnEc1RT+APfI08N8NVgxiDpYHA98deYYHqZIDxv0wkj/ZZ3ZhvsGcGIpsBXNZx3GR2VLyQ1Irm0TdkgTi4T8QLurPV87I8n+sMpj1oNgZQiUiLHAXViJVoYfjbvW85wQ/EgD1+s9L6WTO6xyDUutQUopevc6TaAhgPDwr1JoaQIlLjNyqKEQCyelznmEVVuR0iZq9747EqlVZB/r3eEgfT1ZOdIDxjTprkGHeQlVer0qnlm6nhcxLbiPGwwZ/qjnaNJIAecGSZqOm7Q2JM8FU6qf4IYSomobdM+O3tegoEB29W9jz76AG6CK2d98iYI+a+mhCH5CkQsQiyU++Nr80xwL8UQ3nAROA28uRm8YNaGv6g+TZvChdR6fdW7+bUczAc9XuFfoS5Z43OiuAi2Iw4r1Sv2XFNl/HaiNRNUeBslsogzoUC9sAyM92SV4JP8cfwlJ9IlT5xFc+Rh37JJjba3h+P2zTZIwDJpHw1czPH3UTkD8iV8+lDWI9dzOu+zMemKbuP85/eIy5cKpKj2gMSK9fjfLnJC8SmOVI7RiTKTYvtZp9lYCEAWX2fGvPW20fY9tIBOewakLdNCL82tEmQiCToWfwR7YtHGNd6tcFKBNrc=
   file: dune-copasi-static-$TRAVIS_JOB_NAME.tgz
-  skip_cleanup: true
+  cleanup: false
+  overwrite: true
+  edge: true
   on:
     repo: lkeegan/dune-copasi-static
     tags: true
     all_branches: true
-    overwrite: true

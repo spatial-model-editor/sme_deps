@@ -3,7 +3,7 @@ source source.sh
 
 DEPSDIR=${INSTALL_PREFIX}
 
-DUNE_COPASI_VERSION="master"
+DUNE_COPASI_VERSION="26-add-simple-adaptive-timestepping"
 
 echo "DUNE_COPASI_VERSION: ${DUNE_COPASI_VERSION}"
 echo "PATH: $PATH"
@@ -30,6 +30,7 @@ echo 'CMAKE_FLAGS+=" -DCMAKE_DISABLE_FIND_PACKAGE_QuadMath=TRUE -DBUILD_TESTING=
 echo 'CMAKE_FLAGS+=" -DDUNE_USE_ONLY_STATIC_LIBS=ON -DF77=true"' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DDUNE_COPASI_SD_EXECUTABLE=ON"' >> opts.txt
 echo 'CMAKE_FLAGS+=" -DDUNE_COPASI_MD_EXECUTABLE=ON"' >> opts.txt
+echo 'CMAKE_FLAGS+=" -DUSE_FALLBACK_FILESYSTEM='"$USE_FALLBACK_FILESYSTEM"' "' >> opts.txt
 if [[ $MSYSTEM ]]; then
 	# on windows add flags to support large object files & statically link libgcc.
 	# https://stackoverflow.com/questions/16596876/object-file-has-too-many-sections
