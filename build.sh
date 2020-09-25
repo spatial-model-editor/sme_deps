@@ -3,7 +3,7 @@ source source.sh
 
 DEPSDIR=${INSTALL_PREFIX}
 
-DUNE_COPASI_VERSION="26-add-simple-adaptive-timestepping"
+DUNE_COPASI_VERSION="master"
 
 echo "DUNE_COPASI_VERSION: ${DUNE_COPASI_VERSION}"
 echo "PATH: $PATH"
