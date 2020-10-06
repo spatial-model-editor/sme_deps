@@ -3,7 +3,7 @@ source source.sh
 
 DEPSDIR=${INSTALL_PREFIX}
 
-DUNE_COPASI_VERSION="master"
+DUNE_COPASI_VERSION="v0.3.0"
 
 echo "DUNE_COPASI_VERSION: ${DUNE_COPASI_VERSION}"
 echo "PATH: $PATH"
@@ -54,8 +54,6 @@ rm -rf dune-testtools
 
 # build
 bash dune-copasi/.ci/build.sh
-#bash dune-copasi/.ci/unit_tests.sh
-#bash dune-copasi/.ci/system_tests.sh
 
 # install dune-copasi
 $DUNECONTROL bexec $SUDOCMD make install
@@ -67,10 +65,3 @@ $SUDOCMD rm -rf $DEPSDIR/dune/share
 ls $DEPSDIR/dune
 ls $DEPSDIR/dune/*
 du -sh $DEPSDIR/dune
-
-# print linker flags
-#cat dune-copasi/build-cmake/src/CMakeFiles/dune_copasi_md.dir/flags.make
-#if [[ $MSYSTEM ]]; then
-#	cat dune-copasi/build-cmake/src/CMakeFiles/dune_copasi_md.dir/linklibs.rsp
-#	ldd dune-copasi/build-cmake/src/dune_copasi_md.exe
-#fi
