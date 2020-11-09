@@ -3,7 +3,7 @@ source source.sh
 
 DEPSDIR=${INSTALL_PREFIX}
 
-DUNE_COPASI_VERSION="master"
+DUNE_COPASI_VERSION="36-custom-membrane-flux"
 
 echo "DUNE_COPASI_VERSION: ${DUNE_COPASI_VERSION}"
 echo "PATH: $PATH"
