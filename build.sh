@@ -1,5 +1,6 @@
 #!/bin/bash
-source source.sh
+
+set -e -x
 
 DEPSDIR=${INSTALL_PREFIX}
 
@@ -10,11 +11,28 @@ echo "PATH: $PATH"
 echo "MSYSTEM: $MSYSTEM"
 
 which g++
-which python
 which cmake
 g++ --version
 gcc --version
 cmake --version
+
+echo "Downloading static libs for OS_TARGET: $OS_TARGET"
+# download static libs
+for LIB in common
+do
+    wget "https://github.com/spatial-model-editor/sme_deps_${LIB}/releases/latest/download/sme_deps_${LIB}_${OS_TARGET}.tgz"
+    tar xvf sme_deps_${LIB}_${OS_TARGET}.tgz
+done
+pwd
+ls
+# copy libs to desired location: workaround for tar -C / not working on windows
+if [[ "$OS_TARGET" == *"win"* ]]; then
+   mv smelibs /c/
+   ls /c/smelibs
+else
+   $SUDOCMD mv opt/* /opt/
+   ls /opt/smelibs
+fi
 
 echo 'CMAKE_FLAGS=" -G '"'"'Unix Makefiles'"'"'"' > opts.txt
 echo 'CMAKE_FLAGS+=" -DCMAKE_CXX_STANDARD=17 "' >> opts.txt
@@ -65,3 +83,7 @@ $SUDOCMD rm -rf $DEPSDIR/dune/share
 ls $DEPSDIR/dune
 ls $DEPSDIR/dune/*
 du -sh $DEPSDIR/dune
+
+mkdir artefacts
+cd artefacts
+tar -zcvf sme_deps_dune_${OS_TARGET}.tgz $DEPSDIR/dune/*
