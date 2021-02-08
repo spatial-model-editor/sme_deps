@@ -4,7 +4,7 @@ set -e -x
 
 DEPSDIR=${INSTALL_PREFIX}
 
-DUNE_COPASI_VERSION="36-custom-membrane-flux"
+DUNE_COPASI_VERSION="master"
 
 echo "DUNE_COPASI_VERSION: ${DUNE_COPASI_VERSION}"
 echo "PATH: $PATH"
