@@ -57,13 +57,9 @@ bash .ci/setup_dune $PWD/dune-copasi.opts
 # build & install dune-copasi
 bash .ci/install $PWD/dune-copasi.opts
 
-# remove docs & binaries
-$SUDOCMD rm -rf $DEPSDIR/bin
-$SUDOCMD rm -rf $DEPSDIR/share
-ls $DEPSDIR
-
 cd ..
 
+ls $DEPSDIR
 mkdir artefacts
 cd artefacts
 tar -zcvf sme_deps_dune_${OS_TARGET}.tgz $DEPSDIR/*
