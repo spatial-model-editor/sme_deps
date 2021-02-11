@@ -10,7 +10,7 @@ jobs:
       INSTALL_PREFIX: '/opt/smelibs'
       SUDOCMD: 'sudo'
       OS_TARGET: 'linux'
-      USE_FALLBACK_FILESYSTEM: 'OFF'
+      DUNE_USE_FALLBACK_FILESYSTEM: 'OFF'
     defaults:
       run:
         shell: bash
@@ -34,7 +34,7 @@ jobs:
       SUDOCMD: 'sudo'
       MACOSX_DEPLOYMENT_TARGET: '10.14'
       OS_TARGET: 'osx'
-      USE_FALLBACK_FILESYSTEM: 'ON'
+      DUNE_USE_FALLBACK_FILESYSTEM: 'ON'
     defaults:
       run:
         shell: bash
@@ -53,7 +53,7 @@ jobs:
       INSTALL_PREFIX: '/c/smelibs'
       SUDOCMD: ''
       OS_TARGET: 'win64'
-      USE_FALLBACK_FILESYSTEM: 'OFF'
+      DUNE_USE_FALLBACK_FILESYSTEM: 'OFF'
     defaults:
       run:
         shell: msys2 {0}
@@ -63,7 +63,7 @@ jobs:
         with:
           msystem: MINGW64
           update: true
-          install: mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake make git
+          install: mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake make git dos2unix
       - name: Build script
         run: ./build.sh
       - uses: actions/upload-artifact@v2
@@ -77,7 +77,7 @@ jobs:
       INSTALL_PREFIX: '/c/smelibs'
       SUDOCMD: ''
       OS_TARGET: 'win32'
-      USE_FALLBACK_FILESYSTEM: 'OFF'
+      DUNE_USE_FALLBACK_FILESYSTEM: 'OFF'
     defaults:
       run:
         shell: msys2 {0}
@@ -87,7 +87,7 @@ jobs:
         with:
           msystem: MINGW32
           update: true
-          install: mingw-w64-i686-gcc mingw-w64-i686-cmake make git
+          install: mingw-w64-i686-gcc mingw-w64-i686-cmake make git dos2unix
       - name: Build script
         run: ./build.sh
       - uses: actions/upload-artifact@v2
