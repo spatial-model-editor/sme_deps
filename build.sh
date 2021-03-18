@@ -4,9 +4,7 @@ set -e -x
 
 DEPSDIR=${INSTALL_PREFIX}
 
-DUNE_COPASI_VERSION="master"
-#DUNE_COPASI_VERSION="muparser_cmake"
-
+echo "SME_DEPS_COMMON_VERSION: ${SME_DEPS_COMMON_VERSION}"
 echo "DUNE_COPASI_VERSION: ${DUNE_COPASI_VERSION}"
 echo "PATH: $PATH"
 echo "MSYSTEM: $MSYSTEM"
@@ -18,21 +16,15 @@ gcc --version
 cmake --version
 
 echo "Downloading static libs for OS_TARGET: $OS_TARGET"
-# download static libs
-for LIB in common
-do
-    wget "https://github.com/spatial-model-editor/sme_deps_${LIB}/releases/latest/download/sme_deps_${LIB}_${OS_TARGET}.tgz"
-    tar xvf sme_deps_${LIB}_${OS_TARGET}.tgz
-done
-pwd
-ls
+wget "https://github.com/spatial-model-editor/sme_deps_common/releases/download/${SME_DEPS_COMMON_VERSION}/sme_deps_common_${OS_TARGET}.tgz"
+tar xf sme_deps_common_${OS_TARGET}.tgz
 # copy libs to desired location: workaround for tar -C / not working on windows
 if [[ "$OS_TARGET" == *"win"* ]]; then
    mv smelibs /c/
-   ls /c/smelibs
+   # ls /c/smelibs
 else
    $SUDOCMD mv opt/* /opt/
-   ls /opt/smelibs
+   # ls /opt/smelibs
 fi
 
 # export vars for duneopts script to read
@@ -60,7 +52,7 @@ bash .ci/install $PWD/dune-copasi.opts
 
 cd ..
 
-ls $DEPSDIR
+# ls $DEPSDIR
 mkdir artefacts
 cd artefacts
-tar -zcvf sme_deps_dune_${OS_TARGET}.tgz $DEPSDIR/*
+tar -zcf sme_deps_${OS_TARGET}.tgz $DEPSDIR/*

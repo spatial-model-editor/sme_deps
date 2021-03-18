@@ -2,6 +2,10 @@ name: Release Builds
 
 on: push
 
+env:
+  SME_DEPS_COMMON_VERSION: '2021.03.18'
+  DUNE_COPASI_VERSION: 'muparser_cmake'
+
 jobs:
   linux:
     name: Linux
