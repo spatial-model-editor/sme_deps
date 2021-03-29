@@ -31,10 +31,11 @@ fi
 export DUNE_COPASI_USE_STATIC_DEPS=ON
 export CMAKE_INSTALL_PREFIX=$DEPSDIR
 export MAKE_FLAGS="-j2 VERBOSE=1"
+export CMAKE_CXX_FLAGS='-fvisibility=hidden'
 if [[ $MSYSTEM ]]; then
   # on windows add flags to support large object files
   # https://stackoverflow.com/questions/16596876/object-file-has-too-many-sections
-  export CMAKE_CXX_FLAGS='-Wa,-mbig-obj'
+  export CMAKE_CXX_FLAGS='-fvisibility=hidden -Wa,-mbig-obj'
 fi
 
 # clone dune-copasi
