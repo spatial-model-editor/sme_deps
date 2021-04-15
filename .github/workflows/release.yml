@@ -3,8 +3,8 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: '2021.03.29'
-  DUNE_COPASI_VERSION: 'muparser_cmake'
+  SME_DEPS_COMMON_VERSION: '2021.04.15'
+  DUNE_COPASI_VERSION: 'v1.1.0'
 
 jobs:
   linux:

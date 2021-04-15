@@ -30,7 +30,7 @@ fi
 # export vars for duneopts script to read
 export DUNE_COPASI_USE_STATIC_DEPS=ON
 export CMAKE_INSTALL_PREFIX=$DEPSDIR
-export MAKE_FLAGS="-j2 VERBOSE=1"
+export MAKE_OPTIONS="-j2 VERBOSE=1"
 export CMAKE_CXX_FLAGS='-fvisibility=hidden'
 if [[ $MSYSTEM ]]; then
   # on windows add flags to support large object files
