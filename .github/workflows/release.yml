@@ -3,18 +3,18 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: '2021.04.15'
+  SME_DEPS_COMMON_VERSION: '2021.05.11'
   DUNE_COPASI_VERSION: 'v1.1.0'
 
 jobs:
   linux:
     name: Linux
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     env:
       INSTALL_PREFIX: '/opt/smelibs'
       SUDOCMD: 'sudo'
       OS_TARGET: 'linux'
-      DUNE_USE_FALLBACK_FILESYSTEM: 'OFF'
+      DUNE_USE_FALLBACK_FILESYSTEM: 'ON'
     defaults:
       run:
         shell: bash
