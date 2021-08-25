@@ -3,7 +3,7 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: '2021.07.13'
+  SME_DEPS_COMMON_VERSION: '2021.08.25'
   DUNE_COPASI_VERSION: 'v1.1.0'
 
 jobs:
@@ -101,7 +101,7 @@ jobs:
   release:
     name: Upload Binaries to GitHub Release
     needs: [linux, macos, win64, win32]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     # upload binaries to github release if commit is tagged
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
     steps:
