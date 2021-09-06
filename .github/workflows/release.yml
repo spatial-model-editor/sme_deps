@@ -3,8 +3,8 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: '2021.08.25'
-  DUNE_COPASI_VERSION: 'v1.1.0'
+  SME_DEPS_COMMON_VERSION: '2021.09.06'
+  DUNE_COPASI_VERSION: 'releases/1.1'
 
 jobs:
   linux:
@@ -56,7 +56,7 @@ jobs:
     env:
       INSTALL_PREFIX: '/c/smelibs'
       SUDOCMD: ''
-      OS_TARGET: 'win64'
+      OS_TARGET: 'win64-mingw'
       DUNE_USE_FALLBACK_FILESYSTEM: 'OFF'
     defaults:
       run:
@@ -80,7 +80,7 @@ jobs:
     env:
       INSTALL_PREFIX: '/c/smelibs'
       SUDOCMD: ''
-      OS_TARGET: 'win32'
+      OS_TARGET: 'win32-mingw'
       DUNE_USE_FALLBACK_FILESYSTEM: 'OFF'
     defaults:
       run:
