@@ -20,11 +20,11 @@ wget "https://github.com/spatial-model-editor/sme_deps_common/releases/download/
 tar xf sme_deps_common_${OS_TARGET}.tgz
 # copy libs to desired location: workaround for tar -C / not working on windows
 if [[ "$OS_TARGET" == *"win"* ]]; then
-   mv smelibs /c/
-   # ls /c/smelibs
+    mv smelibs /c/
+    # ls /c/smelibs
 else
-   $SUDOCMD mv opt/* /opt/
-   # ls /opt/smelibs
+    $SUDOCMD mv opt/* /opt/
+    # ls /opt/smelibs
 fi
 
 # export vars for duneopts script to read
@@ -33,9 +33,9 @@ export CMAKE_INSTALL_PREFIX=$DEPSDIR
 export MAKE_OPTIONS="-j2 VERBOSE=1"
 export CMAKE_CXX_FLAGS='-fvisibility=hidden'
 if [[ $MSYSTEM ]]; then
-  # on windows add flags to support large object files
-  # https://stackoverflow.com/questions/16596876/object-file-has-too-many-sections
-  export CMAKE_CXX_FLAGS='-fvisibility=hidden -Wa,-mbig-obj'
+    # on windows add flags to support large object files
+    # https://stackoverflow.com/questions/16596876/object-file-has-too-many-sections
+    export CMAKE_CXX_FLAGS='-fvisibility=hidden -Wa,-mbig-obj'
 fi
 
 # clone dune-copasi

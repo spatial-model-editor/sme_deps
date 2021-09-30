@@ -15,16 +15,21 @@ Get the latest versions here:
 - win64 (mingw-w64-x86_64-gcc 10): [sme_deps_win64.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_win64-mingw.tgz)
 
 ## Updating this repo
+
 Any tagged commit will result in a github release.
 
 To make a new release, update the library version numbers in [release.yml](https://github.com/spatial-model-editor/sme_deps/blob/master/.github/workflows/release.yml#L6) (and the build script [build.sh](https://github.com/spatial-model-editor/sme_deps/blob/master/build.sh) if necessary), then commit the changes:
+
 ```
 git commit -am "revision update"
 git push
 ```
+
 This will trigger GitHub Action builds which will compile the libraries. If the builds are sucessful, tag this commit and push the tag to github:
+
 ```
 git tag <tagname>
 git push origin <tagname>
 ```
+
 The tagged commit will trigger the builds again, but this time they will each add an archive of the resulting static libraries to the `<tagname>` release on this github repo.

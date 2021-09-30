@@ -3,42 +3,42 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: '2021.09.15'
-  DUNE_COPASI_VERSION: 'releases/1.1'
+  SME_DEPS_COMMON_VERSION: "2021.09.15"
+  DUNE_COPASI_VERSION: "releases/1.1"
 
 jobs:
   linux:
     name: Linux
     runs-on: ubuntu-18.04
     env:
-      INSTALL_PREFIX: '/opt/smelibs'
-      SUDOCMD: 'sudo'
-      OS_TARGET: 'linux'
-      DUNE_USE_FALLBACK_FILESYSTEM: 'ON'
+      INSTALL_PREFIX: "/opt/smelibs"
+      SUDOCMD: "sudo"
+      OS_TARGET: "linux"
+      DUNE_USE_FALLBACK_FILESYSTEM: "ON"
     defaults:
       run:
         shell: bash
     steps:
-    - name: Set gcc version
-      run: |
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 100
-        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 100
-    - uses: actions/checkout@v2
-    - name: Build script
-      run: ./build.sh
-    - uses: actions/upload-artifact@v2
-      with:
-        path: ./artefacts/*
+      - name: Set gcc version
+        run: |
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 100
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 100
+      - uses: actions/checkout@v2
+      - name: Build script
+        run: ./build.sh
+      - uses: actions/upload-artifact@v2
+        with:
+          path: ./artefacts/*
 
   macos:
     name: MacOS
     runs-on: macos-10.15
     env:
-      INSTALL_PREFIX: '/opt/smelibs'
-      SUDOCMD: 'sudo'
-      MACOSX_DEPLOYMENT_TARGET: '10.14'
-      OS_TARGET: 'osx'
-      DUNE_USE_FALLBACK_FILESYSTEM: 'ON'
+      INSTALL_PREFIX: "/opt/smelibs"
+      SUDOCMD: "sudo"
+      MACOSX_DEPLOYMENT_TARGET: "10.14"
+      OS_TARGET: "osx"
+      DUNE_USE_FALLBACK_FILESYSTEM: "ON"
     defaults:
       run:
         shell: bash
@@ -54,10 +54,10 @@ jobs:
     name: Windows 64-bit
     runs-on: windows-2019
     env:
-      INSTALL_PREFIX: '/c/smelibs'
-      SUDOCMD: ''
-      OS_TARGET: 'win64-mingw'
-      DUNE_USE_FALLBACK_FILESYSTEM: 'OFF'
+      INSTALL_PREFIX: "/c/smelibs"
+      SUDOCMD: ""
+      OS_TARGET: "win64-mingw"
+      DUNE_USE_FALLBACK_FILESYSTEM: "OFF"
     defaults:
       run:
         shell: msys2 {0}
@@ -78,10 +78,10 @@ jobs:
     name: Windows 32-bit
     runs-on: windows-2019
     env:
-      INSTALL_PREFIX: '/c/smelibs'
-      SUDOCMD: ''
-      OS_TARGET: 'win32-mingw'
-      DUNE_USE_FALLBACK_FILESYSTEM: 'OFF'
+      INSTALL_PREFIX: "/c/smelibs"
+      SUDOCMD: ""
+      OS_TARGET: "win32-mingw"
+      DUNE_USE_FALLBACK_FILESYSTEM: "OFF"
     defaults:
       run:
         shell: msys2 {0}
