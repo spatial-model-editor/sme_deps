@@ -3,7 +3,7 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: "2021.10.15"
+  SME_DEPS_COMMON_VERSION: "2021.11.23"
   DUNE_COPASI_VERSION: "releases/1.1"
 
 jobs:
@@ -15,14 +15,24 @@ jobs:
       SUDOCMD: "sudo"
       OS_TARGET: "linux"
       DUNE_USE_FALLBACK_FILESYSTEM: "ON"
+      CC: "clang"
+      CXX: "clang++"
     defaults:
       run:
         shell: bash
     steps:
-      - name: Set gcc version
+      - name: Add llvm repo for clang 13 & install
         run: |
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 100
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 100
+          sudo wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+          sudo add-apt-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-13 main"
+          sudo apt update -yy
+          sudo apt install -yy clang-13
+      - name: Set clang version
+        run: |
+          sudo update-alternatives --remove-all clang || echo "nothing to remove"
+          sudo update-alternatives --remove-all clang++ || echo "nothing to remove"
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-13 100
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-13 100
       - uses: actions/checkout@v2
       - name: Build script
         run: ./build.sh
