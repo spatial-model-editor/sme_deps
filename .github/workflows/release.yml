@@ -5,6 +5,8 @@ on: push
 env:
   SME_DEPS_COMMON_VERSION: "2021.12.09"
   DUNE_COPASI_VERSION: "releases/1.1"
+  DUNE_VERSION: "releases/2.7"
+  DUNE_SUPPORT_VERSION: "support/dune-copasi-v1.1.0"
 
 jobs:
   win64-msvc:
