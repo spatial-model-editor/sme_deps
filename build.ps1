@@ -23,6 +23,7 @@ function install_dune($module, $repo, $branch) {
     echo "${repo}/${module}/${branch}..."
     git clone -b ${branch} --depth 1 https://gitlab.dune-project.org/${repo}/dune-${module}.git
     cd dune-$module
+    Write-output `n | Out-File ..\dune-$module-patch.diff -Append
     git apply -v ..\dune-$module-patch.diff
     mkdir build
     cd build
