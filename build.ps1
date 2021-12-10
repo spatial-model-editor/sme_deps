@@ -31,6 +31,7 @@ function install_dune($module, $repo, $branch) {
         -DCMAKE_PREFIX_PATH="${Env:INSTALL_PREFIX}" `
         -DDUNE_USE_FALLBACK_FILESYSTEM="${Env:DUNE_USE_FALLBACK_FILESYSTEM}" `
         -DDISABLE_CXX_VERSION_CHECK=ON `
+        -DCMAKE_CXX_FLAGS="/permissive-" `
         -DCXX_MAX_SUPPORTED_STANDARD=17 `
         -DCMAKE_CXX_STANDARD=17
     cmake --build . --parallel
