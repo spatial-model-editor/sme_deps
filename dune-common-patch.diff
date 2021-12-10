@@ -1,0 +1,16 @@
+diff --git a/cmake/modules/DuneMacros.cmake b/cmake/modules/DuneMacros.cmake
+index 4f198193..a427a12f 100644
+--- a/cmake/modules/DuneMacros.cmake
++++ b/cmake/modules/DuneMacros.cmake
+@@ -650,9 +650,10 @@ macro(dune_project)
+   include(LanguageSupport)
+   workaround_9220(Fortran Fortran_Works)
+   if(Fortran_Works)
+-    enable_language(Fortran OPTIONAL)
+     if(NOT CMAKE_Fortran_COMPILER)
+       set(Fortran_Works OFF)
++    else()
++      enable_language(Fortran OPTIONAL)
+     endif()
+   endif()
+

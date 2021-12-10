@@ -5,15 +5,15 @@ echo "DUNE_SUPPORT_VERSION: ${Env:DUNE_SUPPORT_VERSION}"
 
 # download common static libs
 
-$client = New-Object System.Net.WebClient
-$client.DownloadFile("https://github.com/spatial-model-editor/sme_deps_common/releases/download/${Env:SME_DEPS_COMMON_VERSION}/sme_deps_common_${Env:OS_TARGET}.tgz", "C:\deps.tgz")
-7z e C:\deps.tgz
-7z x tmp.tar
-rm tmp.tar
-mv smelibs C:\
-ls C:\smelibs
+# $client = New-Object System.Net.WebClient
+# $client.DownloadFile("https://github.com/spatial-model-editor/sme_deps_common/releases/download/${Env:SME_DEPS_COMMON_VERSION}/sme_deps_common_${Env:OS_TARGET}.tgz", "C:\deps.tgz")
+# 7z e C:\deps.tgz
+# 7z x tmp.tar
+# rm tmp.tar
+# mv smelibs C:\
+# ls C:\smelibs
 
-# remove gfortran?
+# remove any fortran compilers
 rm C:/ProgramData/chocolatey/bin/gfortran.exe
 rm C:/Strawberry/c/bin/gfortran.exe
 
@@ -23,6 +23,7 @@ function install_dune($module, $repo, $branch) {
     echo "${repo}/${module}/${branch}..."
     git clone -b ${branch} --depth 1 https://gitlab.dune-project.org/${repo}/dune-${module}.git
     cd dune-$module
+    git apply -v ..\dune-$module-patch.diff
     mkdir build
     cd build
     cmake -G "Ninja" .. `
