@@ -13,6 +13,10 @@ rm tmp.tar
 mv smelibs C:\
 ls C:\smelibs
 
+# remove gfortran?
+rm C:/ProgramData/chocolatey/bin/gfortran.exe
+rm C:/Strawberry/c/bin/gfortran.exe
+
 # function to download, compile & install a dune module
 
 function install_dune($module, $repo, $branch) {
