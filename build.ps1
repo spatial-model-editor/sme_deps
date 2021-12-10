@@ -14,8 +14,7 @@ echo "DUNE_SUPPORT_VERSION: ${Env:DUNE_SUPPORT_VERSION}"
 # ls C:\smelibs
 
 # remove any fortran compilers
-rm C:/ProgramData/chocolatey/bin/gfortran.exe
-rm C:/Strawberry/c/bin/gfortran.exe
+rm C:\*\*\bin\gfortran.exe
 
 # function to download, compile & install a dune module
 
@@ -23,8 +22,6 @@ function install_dune($module, $repo, $branch) {
     echo "${repo}/${module}/${branch}..."
     git clone -b ${branch} --depth 1 https://gitlab.dune-project.org/${repo}/dune-${module}.git
     cd dune-$module
-    Write-output `n | Out-File ..\dune-$module-patch.diff -Append
-    git apply -v ..\dune-$module-patch.diff
     mkdir build
     cd build
     cmake -G "Ninja" .. `
@@ -43,7 +40,7 @@ function install_dune($module, $repo, $branch) {
 
 # install each dune module in the required order
 
-install_dune "common" "core" "${Env:DUNE_VERSION}"
+install_dune "common" "liam.keegan" "msvc"
 install_dune "logging" "staging" "${Env:DUNE_VERSION}"
 install_dune "uggrid" "staging" "${Env:DUNE_VERSION}"
 install_dune "geometry" "core" "${Env:DUNE_VERSION}"
