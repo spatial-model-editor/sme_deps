@@ -5,13 +5,13 @@ echo "DUNE_SUPPORT_VERSION: ${Env:DUNE_SUPPORT_VERSION}"
 
 # download common static libs
 
-# $client = New-Object System.Net.WebClient
-# $client.DownloadFile("https://github.com/spatial-model-editor/sme_deps_common/releases/download/${Env:SME_DEPS_COMMON_VERSION}/sme_deps_common_${Env:OS_TARGET}.tgz", "C:\deps.tgz")
-# 7z e C:\deps.tgz
-# 7z x tmp.tar
-# rm tmp.tar
-# mv smelibs C:\
-# ls C:\smelibs
+$client = New-Object System.Net.WebClient
+$client.DownloadFile("https://github.com/spatial-model-editor/sme_deps_common/releases/download/${Env:SME_DEPS_COMMON_VERSION}/sme_deps_common_${Env:OS_TARGET}.tgz", "C:\deps.tgz")
+7z e C:\deps.tgz
+7z x tmp.tar
+rm tmp.tar
+mv smelibs C:\
+ls C:\smelibs
 
 # remove any fortran compilers
 rm C:\*\*\bin\gfortran.exe
