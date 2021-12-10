@@ -42,7 +42,7 @@ function install_dune($module, $repo, $branch) {
 # install each dune module in the required order
 
 install_dune "common" "liam.keegan" "msvc"
-install_dune "logging" "staging" "${Env:DUNE_VERSION}"
+install_dune "logging" "staging" "master"
 install_dune "uggrid" "staging" "${Env:DUNE_VERSION}"
 install_dune "geometry" "core" "${Env:DUNE_VERSION}"
 install_dune "grid" "core" "${Env:DUNE_VERSION}"
