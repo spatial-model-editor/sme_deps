@@ -43,9 +43,9 @@ function install_dune($module, $repo, $branch) {
 
 install_dune "common" "liam.keegan" "msvc"
 install_dune "logging" "liam.keegan" "msvc"
-install_dune "uggrid" "staging" "${Env:DUNE_VERSION}"
+install_dune "uggrid" "liam.keegan" "msvc"
 install_dune "geometry" "core" "${Env:DUNE_VERSION}"
-install_dune "grid" "core" "${Env:DUNE_VERSION}"
+install_dune "grid" "liam.keegan" "msvc"
 install_dune "localfunctions" "core" "${Env:DUNE_VERSION}"
 install_dune "istl" "core" "${Env:DUNE_VERSION}"
 install_dune "typetree" "copasi" "${Env:DUNE_SUPPORT_VERSION}"
