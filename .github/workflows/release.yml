@@ -3,7 +3,7 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: "2022.02.03.tbb"
+  SME_DEPS_COMMON_VERSION: "2022.02.08"
   DUNE_COPASI_VERSION: "releases/1.1"
 
 jobs:
@@ -115,6 +115,12 @@ jobs:
     # upload binaries to github release if commit is tagged
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
     steps:
+      - uses: dev-drprasad/delete-older-releases@v0.2.0
+        with:
+          repo: spatial-model-editor/sme_deps
+          keep_latest: 2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/download-artifact@v2
         with:
           name: artifact
