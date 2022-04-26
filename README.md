@@ -9,8 +9,8 @@ This contains all of the libraries from [sme_deps_common](https://github.com/spa
 
 Get the latest versions here:
 
-- linux (clang 13 / Ubuntu 18.04): [sme_deps_linux.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_linux.tgz)
-- osx (Apple clang 12 / macOS 10.15): [sme_deps_osx.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_osx.tgz)
+- linux (clang 14 / Ubuntu 18.04): [sme_deps_linux.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_linux.tgz)
+- osx (Apple clang 13 / macOS 11): [sme_deps_osx.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_osx.tgz)
 - win32-mingw (mingw-w64-i686-gcc 11): [sme_deps_win32-mingw.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_win32-mingw.tgz)
 - win64-mingw (mingw-w64-x86_64-gcc 11): [sme_deps_win64-mingw.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_win64-mingw.tgz)
 
