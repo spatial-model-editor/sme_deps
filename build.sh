@@ -20,7 +20,7 @@ wget "https://github.com/spatial-model-editor/sme_deps_common/releases/download/
 tar xf sme_deps_common_${OS_TARGET}.tgz
 # copy libs to desired location: workaround for tar -C / not working on windows
 if [[ "$OS_TARGET" == *"win"* ]]; then
-    mv smelibs /c/
+    mv c/smelibs /c/
     # ls /c/smelibs
 else
     $SUDOCMD mv opt/* /opt/
