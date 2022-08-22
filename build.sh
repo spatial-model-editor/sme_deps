@@ -53,6 +53,10 @@ bash .ci/install $PWD/dune-copasi.opts
 
 cd ..
 
+# patch DUNE to skip deprecated FindPythonLibs/FindPythonInterp cmake that breaks subsequent FindPython cmake
+sed -i.bak 's|find_package(Python|#find_package(Python|' ${INSTALL_PREFIX}/share/dune/cmake/modules/DunePythonCommonMacros.cmake
+cat ${INSTALL_PREFIX}/share/dune/cmake/modules/DunePythonCommonMacros.cmake
+
 # ls $DEPSDIR
 mkdir artefacts
 cd artefacts
