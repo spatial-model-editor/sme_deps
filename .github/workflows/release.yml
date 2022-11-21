@@ -3,7 +3,7 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: "2022.11.21"
+  SME_DEPS_COMMON_VERSION: "2022.11.21-mpfr"
   DUNE_COPASI_VERSION: "releases/1.1"
 
 jobs:
