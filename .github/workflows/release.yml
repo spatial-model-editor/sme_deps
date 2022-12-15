@@ -3,7 +3,7 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: "2022.11.29"
+  SME_DEPS_COMMON_VERSION: "2022.12.15"
   DUNE_COPASI_VERSION: "releases/1.1"
 
 jobs:
@@ -94,7 +94,7 @@ jobs:
       - uses: dev-drprasad/delete-older-releases@v0.2.0
         with:
           repo: spatial-model-editor/sme_deps
-          keep_latest: 2
+          keep_latest: 3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/download-artifact@v3
