@@ -55,6 +55,8 @@ cd ..
 
 # patch DUNE to skip deprecated FindPythonLibs/FindPythonInterp cmake that breaks subsequent FindPython cmake
 sed -i.bak 's|find_package(Python|#find_package(Python|' ${INSTALL_PREFIX}/share/dune/cmake/modules/DunePythonCommonMacros.cmake
+# also patch out any dune_python_find_package() calls as this can crash on windows
+sed -i.bak 's|dune_python_find_package(|#dune_python_find_package(|' ${INSTALL_PREFIX}/share/dune/cmake/modules/DunePythonCommonMacros.cmake
 cat ${INSTALL_PREFIX}/share/dune/cmake/modules/DunePythonCommonMacros.cmake
 
 # ls $DEPSDIR
