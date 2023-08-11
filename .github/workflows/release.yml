@@ -49,13 +49,18 @@ jobs:
       MACOSX_DEPLOYMENT_TARGET: "13.3"
       OS_TARGET: "osx"
       DUNE_USE_FALLBACK_FILESYSTEM: "ON"
+      CXX: "g++-13"
+      CC: "gcc-13"
     defaults:
       run:
         shell: bash
     steps:
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: "14.3"
+      - run: brew install gcc@13
+      - run: brew info gcc
+      - run: gcc --version
+      - run: gcc-13 --version
+      - run: which gcc
+      - run: which gcc-13
       - uses: actions/checkout@v3
       - name: Build script
         run: ./build.sh
