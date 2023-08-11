@@ -4,7 +4,7 @@ on: push
 
 env:
   SME_DEPS_COMMON_VERSION: "2023.07.12"
-  DUNE_COPASI_VERSION: "releases/1.1"
+  DUNE_COPASI_VERSION: "cxx20_and_libcpp_support"
 
 jobs:
   linux:
