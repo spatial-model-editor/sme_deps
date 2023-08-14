@@ -37,6 +37,7 @@ export MAKE_OPTIONS="-j2 VERBOSE=1"
 export CMAKE_CXX_FLAGS="'-I/usr/local/opt/llvm/include -L/usr/local/opt/llvm/lib -fvisibility=hidden -D_GLIBCXX_USE_TBB_PAR_BACKEND=0 -L/usr/local/opt/llvm/lib/c++ -static-libstdc++'"
 export DUNE_PDELAB_ENABLE_TRACING=OFF
 export DUNE_COPASI_USE_PARAFIELDS=OFF
+export DUNE_ENABLE_PYTHONBINDINGS=OFF
 export CMAKE_DISABLE_FIND_PACKAGE_MPI=ON
 export CC=/usr/local/opt/llvm/bin/clang
 export CXX=/usr/local/opt/llvm/bin/clang++
