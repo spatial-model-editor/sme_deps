@@ -42,25 +42,23 @@ jobs:
 
   macos:
     name: MacOS
-    runs-on: macos-13
+    runs-on: macos-11
     env:
       INSTALL_PREFIX: "/opt/smelibs"
       SUDOCMD: "sudo"
-      MACOSX_DEPLOYMENT_TARGET: "13.3"
+      MACOSX_DEPLOYMENT_TARGET: "11"
       OS_TARGET: "osx"
       DUNE_USE_FALLBACK_FILESYSTEM: "ON"
-      CXX: "g++-13"
-      CC: "gcc-13"
+      # CXX: "g++-13"
+      # CC: "gcc-13"
     defaults:
       run:
         shell: bash
     steps:
-      - run: brew install gcc@13
-      - run: brew info gcc
-      - run: gcc --version
-      - run: gcc-13 --version
-      - run: which gcc
-      - run: which gcc-13
+      - run: brew install llvm@16
+      - run: brew info llvm
+      - run: clang++ --version
+      - run: which clang++
       - uses: actions/checkout@v3
       - name: Build script
         run: ./build.sh
