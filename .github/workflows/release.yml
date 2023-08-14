@@ -46,7 +46,7 @@ jobs:
     env:
       INSTALL_PREFIX: "/opt/smelibs"
       SUDOCMD: "sudo"
-      MACOSX_DEPLOYMENT_TARGET: "11"
+      # MACOSX_DEPLOYMENT_TARGET: "11"
       OS_TARGET: "osx"
       DUNE_USE_FALLBACK_FILESYSTEM: "ON"
       # CXX: "g++-13"
