@@ -15,6 +15,8 @@ g++ --version
 gcc --version
 cmake --version
 
+export PATH="/usr/local/opt/llvm/bin:$PATH"
+
 echo "Downloading static libs for OS_TARGET: $OS_TARGET"
 wget "https://github.com/spatial-model-editor/sme_deps_common/releases/download/${SME_DEPS_COMMON_VERSION}/sme_deps_common_${OS_TARGET}.tgz"
 tar xf sme_deps_common_${OS_TARGET}.tgz
