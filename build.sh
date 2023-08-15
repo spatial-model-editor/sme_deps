@@ -33,6 +33,10 @@ export CC=/usr/local/opt/llvm/bin/clang
 export CXX=/usr/local/opt/llvm/bin/clang++
 
 # add dpl
+
+# hacky way to stop dpl from finding g++ and trying to set some libstdc++ thing
+sudo rm $(which g++)
+
 git clone --depth 1 https://github.com/oneapi-src/oneDPL
 cd oneDPL
 mkdir build
