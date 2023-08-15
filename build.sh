@@ -33,7 +33,7 @@ export CC=/usr/local/opt/llvm/bin/clang
 export CXX=/usr/local/opt/llvm/bin/clang++
 
 # add dpl
-git clone -b oneDPL-2022.2.0-rc1 --depth 1 https://github.com/oneapi-src/oneDPL
+git clone --depth 1 https://github.com/oneapi-src/oneDPL
 cd oneDPL
 mkdir build
 cd build
