@@ -29,6 +29,9 @@ else
     # ls /opt/smelibs
 fi
 
+export CC=/usr/local/opt/llvm/bin/clang
+export CXX=/usr/local/opt/llvm/bin/clang++
+
 # add dpl
 git clone -b oneDPL-2022.2.0-rc1 --depth 1 https://github.com/oneapi-src/oneDPL
 cd oneDPL
@@ -40,7 +43,8 @@ cmake -G "Unix Makefiles" .. \
     -DBUILD_SHARED_LIBS=OFF \
     -DCMAKE_C_FLAGS="-fpic -fvisibility=hidden ${TBB_EXTRA_FLAGS}" \
     -DCMAKE_CXX_FLAGS="-fpic -fvisibility=hidden ${TBB_EXTRA_FLAGS}" \
-    -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"
+    -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX" \
+    -DONEDPL_BACKEND="tbb"
 make
 $SUDOCMD make install
 cd ../../
