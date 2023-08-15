@@ -29,6 +29,23 @@ else
     # ls /opt/smelibs
 fi
 
+# add dpl
+git clone -b oneDPL-2022.2.0-rc1 --depth 1 https://github.com/oneapi-src/oneDPL
+cd oneDPL
+mkdir build
+cd build
+cmake -G "Unix Makefiles" .. \
+    -DCMAKE_OSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET}" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_C_FLAGS="-fpic -fvisibility=hidden ${TBB_EXTRA_FLAGS}" \
+    -DCMAKE_CXX_FLAGS="-fpic -fvisibility=hidden ${TBB_EXTRA_FLAGS}" \
+    -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"
+make
+$SUDOCMD make install
+cd ../../
+
+
 # export vars for duneopts script to read
 export DUNE_COPASI_USE_STATIC_DEPS=ON
 export BUILD_SHARED_LIBS=FALSE
