@@ -29,8 +29,8 @@ else
     # ls /opt/smelibs
 fi
 
-export CC=/usr/local/opt/llvm/bin/clang
-export CXX=/usr/local/opt/llvm/bin/clang++
+# export CC=/usr/local/opt/llvm/bin/clang
+# export CXX=/usr/local/opt/llvm/bin/clang++
 
 # add dpl
 
