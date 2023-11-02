@@ -32,6 +32,13 @@ export DUNE_COPASI_USE_STATIC_DEPS=ON
 export CMAKE_INSTALL_PREFIX=$DEPSDIR
 export MAKE_OPTIONS="-j2 VERBOSE=1"
 export CMAKE_CXX_FLAGS='-fvisibility=hidden'
+export BUILD_SHARED_LIBS=OFF
+export CMAKE_DISABLE_FIND_PACKAGE_MPI=ON
+export DUNE_ENABLE_PYTHONBINDINGS=OFF
+export DUNE_PDELAB_ENABLE_TRACING=OFF
+export DUNE_COPASI_DISABLE_FETCH_PACKAGE_ExprTk=ON
+export DUNE_COPASI_DISABLE_FETCH_PACKAGE_parafields=ON
+export DUNE_COPASI_USE_PARAFIELDS=OFF
 if [[ $MSYSTEM ]]; then
     # on windows add flags to support large object files
     # https://stackoverflow.com/questions/16596876/object-file-has-too-many-sections

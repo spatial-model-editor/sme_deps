@@ -4,7 +4,7 @@ on: push
 
 env:
   SME_DEPS_COMMON_VERSION: "2023.07.12"
-  DUNE_COPASI_VERSION: "releases/1.1"
+  DUNE_COPASI_VERSION: "master"
 
 jobs:
   linux:
@@ -14,7 +14,6 @@ jobs:
       INSTALL_PREFIX: "/opt/smelibs"
       SUDOCMD: "sudo"
       OS_TARGET: "linux"
-      DUNE_USE_FALLBACK_FILESYSTEM: "ON"
       CC: "clang"
       CXX: "clang++"
     defaults:
@@ -33,7 +32,7 @@ jobs:
           sudo update-alternatives --remove-all clang++ || echo "nothing to remove"
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 100
           sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 100
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build script
         run: ./build.sh
       - uses: actions/upload-artifact@v3
@@ -42,18 +41,17 @@ jobs:
 
   macos:
     name: MacOS
-    runs-on: macos-11
+    runs-on: macos-13
     env:
       INSTALL_PREFIX: "/opt/smelibs"
       SUDOCMD: "sudo"
-      MACOSX_DEPLOYMENT_TARGET: "10.14"
+      # MACOSX_DEPLOYMENT_TARGET: "10.14"
       OS_TARGET: "osx"
-      DUNE_USE_FALLBACK_FILESYSTEM: "ON"
     defaults:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build script
         run: ./build.sh
       - uses: actions/upload-artifact@v3
@@ -67,12 +65,11 @@ jobs:
       INSTALL_PREFIX: "/c/smelibs"
       SUDOCMD: ""
       OS_TARGET: "win64-mingw"
-      DUNE_USE_FALLBACK_FILESYSTEM: "OFF"
     defaults:
       run:
         shell: msys2 {0}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: msys2/setup-msys2@v2
         with:
           msystem: MINGW64
