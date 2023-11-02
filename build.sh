@@ -27,24 +27,6 @@ else
     # ls /opt/smelibs
 fi
 
-# add dpl
-git clone -b cmake_linux_check_exclude_mac --depth 1 https://github.com/lkeegan/oneDPL
-cd oneDPL
-mkdir build
-cd build
-cmake -G "Unix Makefiles" .. \
-    -DCMAKE_OSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET}" \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_SHARED_LIBS=OFF \
-    -DCMAKE_C_FLAGS="-fpic -fvisibility=hidden ${TBB_EXTRA_FLAGS}" \
-    -DCMAKE_CXX_FLAGS="-fpic -fvisibility=hidden ${TBB_EXTRA_FLAGS}" \
-    -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX" \
-    -DONEDPL_BACKEND="tbb"
-make
-$SUDOCMD make install
-cd ../../
-
-
 # export vars for duneopts script to read
 export DUNE_COPASI_USE_STATIC_DEPS=ON
 export CMAKE_INSTALL_PREFIX=$DEPSDIR
