@@ -7,37 +7,37 @@ env:
   DUNE_COPASI_VERSION: "ci_fixes_for_dune_copasi_2"
 
 jobs:
-  linux:
-    name: Linux
-    runs-on: ubuntu-20.04
-    env:
-      INSTALL_PREFIX: "/opt/smelibs"
-      SUDOCMD: "sudo"
-      OS_TARGET: "linux"
-      CC: "clang"
-      CXX: "clang++"
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - name: Add llvm repo for clang 16 & install
-        run: |
-          sudo wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-          sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main"
-          sudo apt update -yy
-          sudo apt install -yy clang-16
-      - name: Set clang version
-        run: |
-          sudo update-alternatives --remove-all clang || echo "nothing to remove"
-          sudo update-alternatives --remove-all clang++ || echo "nothing to remove"
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 100
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 100
-      - uses: actions/checkout@v4
-      - name: Build script
-        run: ./build.sh
-      - uses: actions/upload-artifact@v3
-        with:
-          path: ./artefacts/*
+  # linux:
+  #   name: Linux
+  #   runs-on: ubuntu-20.04
+  #   env:
+  #     INSTALL_PREFIX: "/opt/smelibs"
+  #     SUDOCMD: "sudo"
+  #     OS_TARGET: "linux"
+  #     CC: "clang"
+  #     CXX: "clang++"
+  #   defaults:
+  #     run:
+  #       shell: bash
+  #   steps:
+  #     - name: Add llvm repo for clang 16 & install
+  #       run: |
+  #         sudo wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+  #         sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main"
+  #         sudo apt update -yy
+  #         sudo apt install -yy clang-16
+  #     - name: Set clang version
+  #       run: |
+  #         sudo update-alternatives --remove-all clang || echo "nothing to remove"
+  #         sudo update-alternatives --remove-all clang++ || echo "nothing to remove"
+  #         sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 100
+  #         sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 100
+  #     - uses: actions/checkout@v4
+  #     - name: Build script
+  #       run: ./build.sh
+  #     - uses: actions/upload-artifact@v3
+  #       with:
+  #         path: ./artefacts/*
 
   macos:
     name: MacOS
@@ -51,61 +51,59 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: "15"
       - uses: actions/checkout@v4
+      - run: brew install llvm@17
       - name: Build script
         run: ./build.sh
       - uses: actions/upload-artifact@v3
         with:
           path: ./artefacts/*
 
-  win64:
-    name: Windows 64-bit
-    runs-on: windows-2022
-    env:
-      INSTALL_PREFIX: "/c/smelibs"
-      SUDOCMD: ""
-      OS_TARGET: "win64-mingw"
-    defaults:
-      run:
-        shell: msys2 {0}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: msys2/setup-msys2@v2
-        with:
-          msystem: MINGW64
-          update: true
-          install: mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake make git dos2unix
-      - name: Build script
-        run: ./build.sh
-      - uses: actions/upload-artifact@v3
-        with:
-          path: ./artefacts/*
+  # win64:
+  #   name: Windows 64-bit
+  #   runs-on: windows-2022
+  #   env:
+  #     INSTALL_PREFIX: "/c/smelibs"
+  #     SUDOCMD: ""
+  #     OS_TARGET: "win64-mingw"
+  #   defaults:
+  #     run:
+  #       shell: msys2 {0}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: msys2/setup-msys2@v2
+  #       with:
+  #         msystem: MINGW64
+  #         update: true
+  #         install: mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake make git dos2unix
+  #     - name: Build script
+  #       run: ./build.sh
+  #     - uses: actions/upload-artifact@v3
+  #       with:
+  #         path: ./artefacts/*
 
-  release:
-    name: Upload Binaries to GitHub Release
-    needs: [linux, macos, win64]
-    runs-on: ubuntu-latest
-    # upload binaries to github release if commit is tagged
-    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
-    steps:
-      - uses: dev-drprasad/delete-older-releases@v0.2.1
-        with:
-          repo: spatial-model-editor/sme_deps
-          keep_latest: 5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/download-artifact@v3
-        with:
-          name: artifact
-          path: binaries
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: binaries/*
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
+  # release:
+  #   name: Upload Binaries to GitHub Release
+  #   needs: [linux, macos, win64]
+  #   runs-on: ubuntu-latest
+  #   # upload binaries to github release if commit is tagged
+  #   if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
+  #   steps:
+  #     - uses: dev-drprasad/delete-older-releases@v0.2.1
+  #       with:
+  #         repo: spatial-model-editor/sme_deps
+  #         keep_latest: 5
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - uses: actions/download-artifact@v3
+  #       with:
+  #         name: artifact
+  #         path: binaries
+  #     - name: Upload binaries to release
+  #       uses: svenstaro/upload-release-action@v2
+  #       with:
+  #         repo_token: ${{ secrets.GITHUB_TOKEN }}
+  #         file: binaries/*
+  #         tag: ${{ github.ref }}
+  #         overwrite: true
+  #         file_glob: true
