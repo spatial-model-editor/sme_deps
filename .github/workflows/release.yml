@@ -3,8 +3,8 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: "2023.07.12"
-  DUNE_COPASI_VERSION: "releases/1.1"
+  SME_DEPS_COMMON_VERSION: "2023.11.09"
+  DUNE_COPASI_VERSION: "ci_fixes_for_dune_copasi_2_xcode"
 
 jobs:
   linux:
@@ -14,26 +14,25 @@ jobs:
       INSTALL_PREFIX: "/opt/smelibs"
       SUDOCMD: "sudo"
       OS_TARGET: "linux"
-      DUNE_USE_FALLBACK_FILESYSTEM: "ON"
       CC: "clang"
       CXX: "clang++"
     defaults:
       run:
         shell: bash
     steps:
-      - name: Add llvm repo for clang 16 & install
+      - name: Add llvm repo for clang 17 & install
         run: |
           sudo wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-          sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main"
+          sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-17 main"
           sudo apt update -yy
-          sudo apt install -yy clang-16
+          sudo apt install -yy clang-17
       - name: Set clang version
         run: |
           sudo update-alternatives --remove-all clang || echo "nothing to remove"
           sudo update-alternatives --remove-all clang++ || echo "nothing to remove"
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 100
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 100
-      - uses: actions/checkout@v3
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-17 100
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 100
+      - uses: actions/checkout@v4
       - name: Build script
         run: ./build.sh
       - uses: actions/upload-artifact@v3
@@ -42,18 +41,20 @@ jobs:
 
   macos:
     name: MacOS
-    runs-on: macos-11
+    runs-on: macos-13
     env:
       INSTALL_PREFIX: "/opt/smelibs"
       SUDOCMD: "sudo"
-      MACOSX_DEPLOYMENT_TARGET: "10.14"
+      MACOSX_DEPLOYMENT_TARGET: "11"
       OS_TARGET: "osx"
-      DUNE_USE_FALLBACK_FILESYSTEM: "ON"
     defaults:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "14.3"
       - name: Build script
         run: ./build.sh
       - uses: actions/upload-artifact@v3
@@ -67,12 +68,11 @@ jobs:
       INSTALL_PREFIX: "/c/smelibs"
       SUDOCMD: ""
       OS_TARGET: "win64-mingw"
-      DUNE_USE_FALLBACK_FILESYSTEM: "OFF"
     defaults:
       run:
         shell: msys2 {0}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: msys2/setup-msys2@v2
         with:
           msystem: MINGW64
@@ -91,7 +91,7 @@ jobs:
     # upload binaries to github release if commit is tagged
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
     steps:
-      - uses: dev-drprasad/delete-older-releases@v0.2.1
+      - uses: dev-drprasad/delete-older-releases@v0.3.2
         with:
           repo: spatial-model-editor/sme_deps
           keep_latest: 5
