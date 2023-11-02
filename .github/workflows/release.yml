@@ -51,6 +51,9 @@ jobs:
       run:
         shell: bash
     steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "15"
       - uses: actions/checkout@v4
       - name: Build script
         run: ./build.sh
