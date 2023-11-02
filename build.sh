@@ -9,11 +9,12 @@ echo "DUNE_COPASI_VERSION: ${DUNE_COPASI_VERSION}"
 echo "PATH: $PATH"
 echo "MSYSTEM: $MSYSTEM"
 
-which g++
-which cmake
-g++ --version
-gcc --version
-cmake --version
+export CXX=/usr/local/opt/llvm/bin/clang++
+export CC=/usr/local/opt/llvm/bin/clang
+export LDFLAGS="-L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++"
+export CPPFLAGS="-I/usr/local/opt/llvm/include"
+
+$CXX --version
 
 echo "Downloading static libs for OS_TARGET: $OS_TARGET"
 wget "https://github.com/spatial-model-editor/sme_deps_common/releases/download/${SME_DEPS_COMMON_VERSION}/sme_deps_common_${OS_TARGET}.tgz"
@@ -31,7 +32,8 @@ fi
 export DUNE_COPASI_USE_STATIC_DEPS=ON
 export CMAKE_INSTALL_PREFIX=$DEPSDIR
 export MAKE_OPTIONS="-j2 VERBOSE=1"
-export CMAKE_CXX_FLAGS='-fvisibility=hidden'
+# -fexperimental-library for clang/libc++ to enable <execution>
+export CMAKE_CXX_FLAGS="'-fvisibility=hidden -fexperimental-library'"
 export BUILD_SHARED_LIBS=OFF
 export CMAKE_DISABLE_FIND_PACKAGE_MPI=ON
 export DUNE_ENABLE_PYTHONBINDINGS=OFF
