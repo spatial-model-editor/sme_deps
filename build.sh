@@ -28,6 +28,11 @@ else
     # ls /opt/smelibs
 fi
 
+# temp hack to remove muparser
+rm -rf $DEPSDIR/lib/libmuparser.a
+rm -rf $DEPSDIR/lib/cmake/muparser
+rm -rf $DEPSDIR/include/muParser*
+
 # export vars for duneopts script to read
 export DUNE_COPASI_USE_STATIC_DEPS=ON
 export CMAKE_INSTALL_PREFIX=$DEPSDIR
