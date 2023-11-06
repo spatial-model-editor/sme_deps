@@ -31,7 +31,7 @@ fi
 # export vars for duneopts script to read
 export DUNE_COPASI_USE_STATIC_DEPS=ON
 export CMAKE_INSTALL_PREFIX=$DEPSDIR
-export MAKE_OPTIONS="-j2 VERBOSE=1"
+export MAKE_OPTIONS="-j1 VERBOSE=1"
 # -fexperimental-library for clang/libc++ to enable <execution>
 export CMAKE_CXX_FLAGS="'-fvisibility=hidden -fexperimental-library -L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++ -I/usr/local/opt/llvm/include'"
 export BUILD_SHARED_LIBS=OFF
