@@ -12,15 +12,16 @@ echo "MSYSTEM: $MSYSTEM"
 export CXX=/usr/local/opt/llvm/bin/clang++
 export CC=/usr/local/opt/llvm/bin/clang
 #export LDFLAGS="/usr/local/opt/llvm/lib/c++/libc++.a /usr/local/opt/llvm/lib/c++/libc++abi.a /usr/local/opt/llvm/lib/c++/libc++experimental.a -L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++"
-export LDFLAGS="-L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++"
+export LDFLAGS="-L/usr/local/opt/llvmstatic/lib -L/usr/local/opt/llvmstatic/lib/c++ -Wl,-rpath,/usr/local/opt/llvmstatic/lib/c++"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 otool -L /usr/local/opt/llvm/lib/c++/libc++.1.dylib
 
-ls /usr/local/opt/llvm/lib/*
+#ls /usr/local/opt/llvm/lib/*
 
-sudo rm -rf /usr/local/opt/llvm/lib/*.dylib
-sudo rm -rf /usr/local/opt/llvm/lib/*/*.dylib
+sudo cp -r /usr/local/opt/llvm/ /usr/local/opt/llvmstatic/
+sudo rm -rf /usr/local/opt/llvmstatic/lib/*.dylib
+sudo rm -rf /usr/local/opt/llvmstatic/lib/*/*.dylib
 
 $CXX --version
 
@@ -46,7 +47,7 @@ export DUNE_COPASI_USE_STATIC_DEPS=ON
 export CMAKE_INSTALL_PREFIX=$DEPSDIR
 export MAKE_OPTIONS="-j2 VERBOSE=1"
 # -fexperimental-library for clang/libc++ to enable <execution>
-export CMAKE_CXX_FLAGS="'-fvisibility=hidden -fexperimental-library -L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++ -I/usr/local/opt/llvm/include'"
+export CMAKE_CXX_FLAGS="'-fvisibility=hidden -fexperimental-library'"
 export BUILD_SHARED_LIBS=OFF
 export CMAKE_DISABLE_FIND_PACKAGE_MPI=ON
 export DUNE_ENABLE_PYTHONBINDINGS=OFF
