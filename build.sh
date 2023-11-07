@@ -12,7 +12,7 @@ echo "MSYSTEM: $MSYSTEM"
 export CXX=/usr/local/opt/llvm/bin/clang++
 export CC=/usr/local/opt/llvm/bin/clang
 #export LDFLAGS="/usr/local/opt/llvm/lib/c++/libc++.a /usr/local/opt/llvm/lib/c++/libc++abi.a /usr/local/opt/llvm/lib/c++/libc++experimental.a -L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++"
-export LDFLAGS="-L/usr/local/opt/llvmstatic/lib -L/usr/local/opt/llvmstatic/lib/c++ -Wl,-rpath,/usr/local/opt/llvmstatic/lib/c++"
+export LDFLAGS="-llibc++ -llibc++abi -llibc++experimental -L/usr/local/opt/llvmstatic/lib -L/usr/local/opt/llvmstatic/lib/c++ -Wl,-rpath,/usr/local/opt/llvmstatic/lib/c++"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 otool -L /usr/local/opt/llvm/lib/c++/libc++.1.dylib
