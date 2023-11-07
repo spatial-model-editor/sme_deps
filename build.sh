@@ -11,7 +11,7 @@ echo "MSYSTEM: $MSYSTEM"
 
 export CXX=/usr/local/opt/llvm/bin/clang++
 export CC=/usr/local/opt/llvm/bin/clang
-export LDFLAGS="-static -llibc++ -llibc++-abi -llibc++experimental -L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++"
+export LDFLAGS="/usr/local/opt/llvm/lib/c++/libc++.a /usr/local/opt/llvm/lib/c++/libc++abi.a /usr/local/opt/llvm/lib/c++/libc++experimental.a -L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 ls /usr/local/opt/llvm/lib/*
@@ -76,9 +76,11 @@ sed -i.bak 's|find_package(Python|#find_package(Python|' ${INSTALL_PREFIX}/share
 sed -i.bak 's|dune_python_find_package(|#dune_python_find_package(|' ${INSTALL_PREFIX}/share/dune/cmake/modules/DunePythonCommonMacros.cmake
 cat ${INSTALL_PREFIX}/share/dune/cmake/modules/DunePythonCommonMacros.cmake
 
+/opt/smelibs/bin/dune-copasi --help
+
 otool -L /opt/smelibs/bin/dune-copasi
 
 # ls $DEPSDIR
-mkdir artefacts
-cd artefacts
-tar -zcf sme_deps_${OS_TARGET}.tgz $DEPSDIR/*
+#mkdir artefacts
+#cd artefacts
+#tar -zcf sme_deps_${OS_TARGET}.tgz $DEPSDIR/*
