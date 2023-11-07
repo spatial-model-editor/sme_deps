@@ -15,7 +15,12 @@ export CC=/usr/local/opt/llvm/bin/clang
 export LDFLAGS="-L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
+otool -L /usr/local/opt/llvm/lib/c++/libc++.1.dylib
+
 ls /usr/local/opt/llvm/lib/*
+
+sudo rm -rf /usr/local/opt/llvm/lib/*.dylib
+sudo rm -rf /usr/local/opt/llvm/lib/*/*.dylib
 
 $CXX --version
 
