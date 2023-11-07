@@ -45,7 +45,7 @@ jobs:
     env:
       INSTALL_PREFIX: "/opt/smelibs"
       SUDOCMD: "sudo"
-      MACOSX_DEPLOYMENT_TARGET: "10.14"
+      MACOSX_DEPLOYMENT_TARGET: "13"
       OS_TARGET: "osx"
     defaults:
       run:
