@@ -90,6 +90,8 @@ jobs:
     runs-on: ubuntu-latest
     # upload binaries to github release if commit is tagged
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
+    permissions:
+      contents: write
     steps:
       - uses: dev-drprasad/delete-older-releases@v0.3.2
         with:
