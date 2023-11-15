@@ -4,7 +4,8 @@ on: push
 
 env:
   SME_DEPS_COMMON_VERSION: "2023.11.09"
-  DUNE_COPASI_VERSION: "ci_fixes_for_dune_copasi_2_xcode"
+  #DUNE_COPASI_VERSION: "ci_fixes_for_dune_copasi_2_xcode"
+  DUNE_COPASI_VERSION: "master"
 
 jobs:
   linux:
