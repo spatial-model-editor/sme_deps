@@ -32,6 +32,7 @@ export CMAKE_DISABLE_FIND_PACKAGE_MPI=ON
 export DUNE_ENABLE_PYTHONBINDINGS=OFF
 export DUNE_PDELAB_ENABLE_TRACING=OFF
 export DUNE_COPASI_DISABLE_FETCH_PACKAGE_ExprTk=ON
+export CMAKE_DISABLE_FIND_PACKAGE_parafields=ON
 export DUNE_COPASI_DISABLE_FETCH_PACKAGE_parafields=ON
 if [[ $MSYSTEM ]]; then
     # on windows add flags to support large object files
