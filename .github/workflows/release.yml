@@ -3,7 +3,7 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: "2023.11.21"
+  SME_DEPS_COMMON_VERSION: "2023.12.12"
   DUNE_COPASI_VERSION: "master"
 
 jobs:
