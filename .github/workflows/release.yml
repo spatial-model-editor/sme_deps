@@ -3,7 +3,7 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: "2023.12.12"
+  SME_DEPS_COMMON_VERSION: "2024.01.05"
   DUNE_COPASI_VERSION: "master"
 
 jobs:
@@ -35,8 +35,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build script
         run: ./build.sh
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: artifacts-linux
           path: ./artefacts/*
 
   macos:
@@ -57,8 +58,9 @@ jobs:
           xcode-version: "14.3"
       - name: Build script
         run: ./build.sh
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: artifacts-macos
           path: ./artefacts/*
 
   win64:
@@ -80,8 +82,9 @@ jobs:
           install: mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake make git dos2unix
       - name: Build script
         run: ./build.sh
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: artifacts-win64
           path: ./artefacts/*
 
   release:
@@ -99,9 +102,10 @@ jobs:
           keep_latest: 5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: artifact
+          pattern: artifacts-*
+          merge-multiple: true
           path: binaries
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
