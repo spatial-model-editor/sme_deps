@@ -32,6 +32,10 @@ jobs:
           sudo update-alternatives --remove-all clang++ || echo "nothing to remove"
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-17 100
           sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 100
+      - name: Disable system blas/lapack
+        run: |
+          sudo rm /usr/lib/x86_64-linux-gnu/libblas*
+          sudo rm /usr/lib/x86_64-linux-gnu/liblapack*
       - uses: actions/checkout@v4
       - name: Build script
         run: ./build.sh
