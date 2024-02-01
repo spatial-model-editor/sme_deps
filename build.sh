@@ -34,6 +34,8 @@ export DUNE_PDELAB_ENABLE_TRACING=OFF
 export DUNE_COPASI_DISABLE_FETCH_PACKAGE_ExprTk=ON
 export CMAKE_DISABLE_FIND_PACKAGE_parafields=ON
 export DUNE_COPASI_DISABLE_FETCH_PACKAGE_parafields=ON
+# build dune-copasi with 2d and 3d support
+export DUNE_COPASI_GRID_DIMENSIONS='"2;3"'
 if [[ $MSYSTEM ]]; then
     # on windows add flags to support large object files
     # https://stackoverflow.com/questions/16596876/object-file-has-too-many-sections
