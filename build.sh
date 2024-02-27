@@ -26,7 +26,7 @@ export CMAKE_OSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET}"
 export CMAKE_INSTALL_PREFIX=$DEPSDIR
 export MAKE_OPTIONS="-j2 VERBOSE=1"
 # disable gcc 10 pstl TBB backend as it uses the old TBB API
-export CMAKE_CXX_FLAGS="'-fvisibility=hidden -D_GLIBCXX_USE_TBB_PAR_BACKEND=0 -DNDEBUG'"
+export CMAKE_CXX_FLAGS='"-fvisibility=hidden -D_GLIBCXX_USE_TBB_PAR_BACKEND=0 -DNDEBUG"'
 export BUILD_SHARED_LIBS=OFF
 export CMAKE_DISABLE_FIND_PACKAGE_MPI=ON
 export DUNE_ENABLE_PYTHONBINDINGS=OFF
@@ -39,7 +39,7 @@ export DUNE_COPASI_GRID_DIMENSIONS='"2;3"'
 if [[ $MSYSTEM ]]; then
     # on windows add flags to support large object files
     # https://stackoverflow.com/questions/16596876/object-file-has-too-many-sections
-    export CMAKE_CXX_FLAGS='-fvisibility=hidden -Wa,-mbig-obj'
+    export CMAKE_CXX_FLAGS='"-fvisibility=hidden -Wa,-mbig-obj -D_GLIBCXX_USE_TBB_PAR_BACKEND=0 -DNDEBUG"'
 fi
 
 # clone dune-copasi
