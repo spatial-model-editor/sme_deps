@@ -83,7 +83,7 @@ jobs:
         with:
           msystem: UCRT64
           update: true
-          install: mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake make git dos2unix
+          install: mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-git-lfs make git dos2unix
       - name: Build script
         run: ./build.sh
       - uses: actions/upload-artifact@v4
@@ -100,7 +100,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: dev-drprasad/delete-older-releases@v0.3.2
+      - uses: dev-drprasad/delete-older-releases@v0.3.3
         with:
           repo: spatial-model-editor/sme_deps
           keep_latest: 5
