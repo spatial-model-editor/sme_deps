@@ -46,6 +46,7 @@ fi
 git clone -b ${DUNE_COPASI_VERSION} --depth 1 https://gitlab.dune-project.org/copasi/dune-copasi.git
 cd dune-copasi
 # get test data files
+git lfs install
 git lfs pull
 
 # check opts
