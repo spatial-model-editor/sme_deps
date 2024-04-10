@@ -3,97 +3,39 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: "2024.03.28"
+  SME_DEPS_COMMON_VERSION: "2024.04.10"
   DUNE_COPASI_VERSION: "master"
 
 jobs:
-  linux:
-    name: Linux
-    runs-on: ubuntu-20.04
-    env:
-      INSTALL_PREFIX: "/opt/smelibs"
-      SUDOCMD: "sudo"
-      OS_TARGET: "linux"
-      CC: "clang"
-      CXX: "clang++"
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: "ubuntu-20.04"
+            shell: "bash"
+          - os: "macos-13"
+            shell: "bash"
+          - os: "windows-2022"
+            shell: "msys2 {0}"
     defaults:
       run:
-        shell: bash
+        shell: ${{ matrix.shell }}
     steps:
-      - name: Add llvm repo for clang 18 & install
-        run: |
-          sudo wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-          sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-18 main"
-          sudo apt update -yy
-          sudo apt install -yy clang-18
-      - name: Set clang version
-        run: |
-          sudo update-alternatives --remove-all clang || echo "nothing to remove"
-          sudo update-alternatives --remove-all clang++ || echo "nothing to remove"
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100
-      - name: Disable system blas/lapack
-        run: |
-          sudo rm /usr/lib/x86_64-linux-gnu/libblas*
-          sudo rm /usr/lib/x86_64-linux-gnu/liblapack*
+      - uses: spatial-model-editor/setup-ci@v1
       - uses: actions/checkout@v4
       - name: Build script
         run: ./build.sh
       - uses: actions/upload-artifact@v4
         with:
-          name: artifacts-linux
+          name: artifacts-${{ matrix.os }}
           path: ./artefacts/*
-
-  macos:
-    name: MacOS
-    runs-on: macos-13
-    env:
-      INSTALL_PREFIX: "/opt/smelibs"
-      SUDOCMD: "sudo"
-      MACOSX_DEPLOYMENT_TARGET: "11"
-      OS_TARGET: "osx"
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - uses: actions/checkout@v4
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: "14.3"
-      - name: Build script
-        run: ./build.sh
-      - uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-macos
-          path: ./artefacts/*
-
-  win64:
-    name: Windows 64-bit
-    runs-on: windows-2022
-    env:
-      INSTALL_PREFIX: "/c/smelibs"
-      SUDOCMD: ""
-      OS_TARGET: "win64-mingw"
-    defaults:
-      run:
-        shell: msys2 {0}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: msys2/setup-msys2@v2
-        with:
-          msystem: UCRT64
-          update: true
-          install: mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-git-lfs make git dos2unix
-      - name: Build script
-        run: ./build.sh
-      - uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-win64
-          path: ./artefacts/*
+          retention-days: 3
 
   release:
     name: Upload Binaries to GitHub Release
-    needs: [linux, macos, win64]
+    needs: [build]
     runs-on: ubuntu-latest
     # upload binaries to github release if commit is tagged
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
