@@ -4,7 +4,7 @@ on: push
 
 env:
   SME_DEPS_COMMON_VERSION: "2024.03.28"
-  DUNE_COPASI_VERSION: "master"
+  DUNE_COPASI_VERSION: "8e989f2729a10d3c8341a569f4866c050ea27cb7"
 
 jobs:
   linux:
