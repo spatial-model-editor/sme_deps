@@ -22,8 +22,6 @@ fi
 # export vars for duneopts script to read
 export CMAKE_OSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET}"
 export CMAKE_INSTALL_PREFIX=${INSTALL_PREFIX}
-export CMAKE_GENERATOR="Ninja"
-export MAKE_OPTIONS="-v -j1"
 # disable gcc 10 pstl TBB backend as it uses the old TBB API
 export CMAKE_CXX_FLAGS='"-fvisibility=hidden -D_GLIBCXX_USE_TBB_PAR_BACKEND=0 -DNDEBUG"'
 export BUILD_SHARED_LIBS=OFF
