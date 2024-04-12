@@ -15,5 +15,10 @@ repos:
     rev: v6.2.1
     hooks:
       - id: beautysh
+
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.28.1
+    hooks:
+      - id: check-github-actions
 ci:
   autoupdate_schedule: quarterly
