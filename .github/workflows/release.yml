@@ -15,16 +15,24 @@ jobs:
         include:
           - os: "ubuntu-20.04"
             shell: "bash"
+            ccache-path: "~/.cache/ccache"
           - os: "macos-13"
             shell: "bash"
+            ccache-path: "/Users/runner/Library/Caches/ccache"
           - os: "windows-2022"
             shell: "msys2 {0}"
+            ccache-path: 'C:\Users\runneradmin\AppData\Local\ccache'
     defaults:
       run:
         shell: ${{ matrix.shell }}
     steps:
       - uses: spatial-model-editor/setup-ci@v1
       - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: ${{ matrix.ccache-path }}
+          key: ccache-${{ github.job }}-${{ runner.os }}-${{ github.sha }}
+          restore-keys: ccache-${{ github.job }}-${{ runner.os }}-
       - name: Build script
         run: ./build.sh
       - uses: actions/upload-artifact@v4
