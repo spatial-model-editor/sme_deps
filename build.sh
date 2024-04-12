@@ -59,6 +59,8 @@ bash .ci/install $PWD/dune-copasi.opts
 # build & run dune-copasi tests
 bash .ci/test $PWD/dune-copasi.opts
 
+ccache --show-stats
+
 cd ..
 
 # patch DUNE to skip deprecated FindPythonLibs/FindPythonInterp cmake that breaks subsequent FindPython cmake
