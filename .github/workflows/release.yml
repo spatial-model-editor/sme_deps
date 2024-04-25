@@ -3,7 +3,6 @@ name: Release Builds
 on: push
 
 env:
-  SME_DEPS_COMMON_VERSION: "2024.04.24"
   DUNE_COPASI_VERSION: "master"
 
 jobs:
@@ -26,6 +25,8 @@ jobs:
         shell: ${{ matrix.shell }}
     steps:
       - uses: spatial-model-editor/setup-ci@2024.04.23
+        with:
+          sme_deps_common: "2024.04.24"
       - uses: actions/checkout@v4
       - run: ./build.sh
       - uses: actions/upload-artifact@v4

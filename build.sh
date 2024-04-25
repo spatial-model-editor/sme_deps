@@ -7,18 +7,6 @@ echo "DUNE_COPASI_VERSION: ${DUNE_COPASI_VERSION}"
 echo "PATH: $PATH"
 echo "MSYSTEM: $MSYSTEM"
 
-echo "Downloading static libs for OS: $OS"
-wget "https://github.com/spatial-model-editor/sme_deps_common/releases/download/${SME_DEPS_COMMON_VERSION}/sme_deps_common_${OS}.tgz"
-tar xf sme_deps_common_${OS}.tgz
-# copy libs to desired location: workaround for tar -C / not working on windows
-if [[ "$OS" == *"win"* ]]; then
-    mv c/smelibs /c/
-    # ls /c/smelibs
-else
-    ${SUDO_CMD} mv opt/* /opt/
-    # ls /opt/smelibs
-fi
-
 # export vars for duneopts script to read
 export CMAKE_OSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET}"
 export CMAKE_INSTALL_PREFIX=${INSTALL_PREFIX}
