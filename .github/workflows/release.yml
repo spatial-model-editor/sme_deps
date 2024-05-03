@@ -1,10 +1,7 @@
 name: Release Builds
-
 on: push
-
 env:
   DUNE_COPASI_VERSION: "master"
-
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -34,7 +31,6 @@ jobs:
           name: artifacts-${{ matrix.os }}
           path: ./artefacts/*
           retention-days: 3
-
   release:
     name: Upload Binaries to GitHub Release
     needs: [build]
