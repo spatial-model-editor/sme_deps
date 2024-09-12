@@ -2,6 +2,9 @@ name: Release Builds
 on: push
 env:
   DUNE_COPASI_VERSION: "releases/2.0"
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -23,7 +26,7 @@ jobs:
     steps:
       - uses: spatial-model-editor/setup-ci@2024.04.23
         with:
-          sme_deps_common: "2024.05.15"
+          sme_deps_common: "2024.09.12"
       - uses: actions/checkout@v4
       - run: ./build.sh
       - uses: actions/upload-artifact@v4
@@ -40,7 +43,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: dev-drprasad/delete-older-releases@v0.3.3
+      - uses: dev-drprasad/delete-older-releases@v0.3.4
         with:
           repo: spatial-model-editor/sme_deps
           keep_latest: 5
