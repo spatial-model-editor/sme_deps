@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: spatial-model-editor/setup-ci@2025.02.03
         with:
-          sme_deps_common: "2025.01.31"
+          sme_deps_common: "2025.02.03"
       - uses: actions/checkout@v4
       - run: ./build.sh
       - uses: actions/upload-artifact@v4
