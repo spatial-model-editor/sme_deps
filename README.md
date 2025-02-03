@@ -11,7 +11,7 @@ Get the latest versions here:
 
 - linux (clang 19 / Ubuntu 22.04): [sme_deps_linux.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_linux.tgz)
 - linux-arm64 (clang 19 / Ubuntu 22.04): [sme_deps_linux-arm64.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_linux-arm64.tgz)
-- osx (Xcode 15.2 / macOS 13): [sme_deps_osx.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_osx.tgz)
+- osx (Xcode 14.3 / macOS 13): [sme_deps_osx.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_osx.tgz)
 - osx-arm64 (Xcode 16.1 / macOS 14): [sme_deps_osx-arm64.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_osx-arm64.tgz)
 - win64-mingw (mingw-w64-x86_64-gcc 14): [sme_deps_win64-mingw.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_win64-mingw.tgz)
 

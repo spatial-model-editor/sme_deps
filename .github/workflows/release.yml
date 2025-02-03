@@ -26,7 +26,7 @@ jobs:
       run:
         shell: ${{ matrix.shell }}
     steps:
-      - uses: spatial-model-editor/setup-ci@2025.01.31
+      - uses: spatial-model-editor/setup-ci@2025.02.03
         with:
           sme_deps_common: "2025.01.31"
       - uses: actions/checkout@v4
