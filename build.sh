@@ -8,6 +8,7 @@ echo "PATH: $PATH"
 echo "MSYSTEM: $MSYSTEM"
 
 # export vars for duneopts script to read
+export OS_TARGET="${OS}"
 export CMAKE_OSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET}"
 export CMAKE_INSTALL_PREFIX=${INSTALL_PREFIX}
 export CMAKE_CXX_COMPILER_LAUNCHER=ccache
