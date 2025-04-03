@@ -7,11 +7,15 @@ echo "DUNE_COPASI_VERSION: ${DUNE_COPASI_VERSION}"
 echo "PATH: $PATH"
 echo "MSYSTEM: $MSYSTEM"
 
+# temporary workaround for cmake 4.0 complaining about symengine min cmake version being too low:
+export CMAKE_POLICY_VERSION_MINIMUM=3.5
+
 # export vars for duneopts script to read
 export OS_TARGET="${OS}"
 export CMAKE_OSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET}"
 export CMAKE_INSTALL_PREFIX=${INSTALL_PREFIX}
 export CMAKE_CXX_COMPILER_LAUNCHER=ccache
+
 # disable gcc 10 pstl TBB backend as it uses the old TBB API
 export CMAKE_CXX_FLAGS='"-fvisibility=hidden -D_GLIBCXX_USE_TBB_PAR_BACKEND=0 -DNDEBUG"'
 export BUILD_SHARED_LIBS=OFF
