@@ -1,7 +1,7 @@
 name: Release Builds
 on: push
 env:
-  DUNE_COPASI_VERSION: "releases/2.1"
+  DUNE_COPASI_VERSION: "macos_memory_resource"
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: true
@@ -26,9 +26,9 @@ jobs:
       run:
         shell: ${{ matrix.shell }}
     steps:
-      - uses: spatial-model-editor/setup-ci@2025.02.03
+      - uses: spatial-model-editor/setup-ci@2025.05.09
         with:
-          sme_deps_common: "2025.02.18"
+          sme_deps_common: "2025.06.17"
       - uses: actions/checkout@v4
       - run: ./build.sh
       - uses: actions/upload-artifact@v4
