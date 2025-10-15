@@ -32,6 +32,9 @@ if [[ $MSYSTEM ]]; then
     # https://stackoverflow.com/questions/16596876/object-file-has-too-many-sections
     export CMAKE_CXX_FLAGS='"-fvisibility=hidden -Wa,-mbig-obj -D_GLIBCXX_USE_TBB_PAR_BACKEND=0 -DNDEBUG"'
 fi
+if [[ $BUILD_TAG == "_tsan" ]]; then
+    export CMAKE_CXX_FLAGS='"-fvisibility=hidden -D_GLIBCXX_USE_TBB_PAR_BACKEND=0 -DNDEBUG -fsanitize=thread -fno-omit-frame-pointer"'
+fi
 
 # clone dune-copasi
 git clone -b ${DUNE_COPASI_VERSION} --depth 1 https://gitlab.dune-project.org/copasi/dune-copasi.git
@@ -50,7 +53,11 @@ bash .ci/setup_dune $PWD/dune-copasi.opts
 bash .ci/install $PWD/dune-copasi.opts
 
 # build & run dune-copasi tests
-bash .ci/test $PWD/dune-copasi.opts
+if [[ $BUILD_TAG == "_tsan" ]]; then
+    echo "Skipping tests for TSAN build"
+else
+    bash .ci/test $PWD/dune-copasi.opts
+fi
 
 ccache --show-stats
 
@@ -65,4 +72,4 @@ cat ${INSTALL_PREFIX}/share/dune/cmake/modules/DunePythonCommonMacros.cmake
 ls ${INSTALL_PREFIX}
 mkdir artefacts
 cd artefacts
-tar -zcf sme_deps_${OS}.tgz ${INSTALL_PREFIX}/*
+tar -zcf sme_deps_${OS}${BUILD_TAG}.tgz ${INSTALL_PREFIX}/*

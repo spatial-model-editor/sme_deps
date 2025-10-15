@@ -14,6 +14,9 @@ jobs:
         include:
           - os: "ubuntu-22.04"
             shell: "bash"
+          - os: "ubuntu-22.04"
+            shell: "bash"
+            BUILD_TAG: "_tsan"
           - os: "ubuntu-22.04-arm"
             shell: "bash"
           - os: "macos-13"
@@ -25,15 +28,19 @@ jobs:
     defaults:
       run:
         shell: ${{ matrix.shell }}
+    env:
+      BUILD_TAG: ${{ matrix.BUILD_TAG }}
     steps:
-      - uses: spatial-model-editor/setup-ci@2025.10.06
+      - uses: spatial-model-editor/setup-ci@2025.10.15
         with:
-          sme_deps_common: "2025.10.06"
+          sme_deps_common: "2025.10.15"
+          build_tag: ${{ matrix.BUILD_TAG }}
+          cache_id: ${{ matrix.BUILD_TAG }}
       - uses: actions/checkout@v4
       - run: ./build.sh
       - uses: actions/upload-artifact@v4
         with:
-          name: artifacts-${{ matrix.os }}
+          name: artifacts-${{ matrix.os }}${{ matrix.BUILD_TAG }}
           path: ./artefacts/*
           retention-days: 3
   release:
