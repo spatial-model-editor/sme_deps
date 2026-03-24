@@ -1,7 +1,7 @@
 name: Release Builds
 on: push
 env:
-  DUNE_COPASI_VERSION: "master"
+  DUNE_COPASI_VERSION: "test_pdelab_fix"
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: true
