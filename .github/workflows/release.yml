@@ -19,8 +19,6 @@ jobs:
             BUILD_TAG: "_tsan"
           - os: "ubuntu-22.04-arm"
             shell: "bash"
-          - os: "macos-13"
-            shell: "bash"
           - os: "macos-14"
             shell: "bash"
           - os: "windows-2022"
@@ -31,14 +29,14 @@ jobs:
     env:
       BUILD_TAG: ${{ matrix.BUILD_TAG }}
     steps:
-      - uses: spatial-model-editor/setup-ci@2025.10.15
+      - uses: spatial-model-editor/setup-ci@2026.03.23
         with:
-          sme_deps_common: "2025.10.15"
+          sme_deps_common: "2026.03.24"
           build_tag: ${{ matrix.BUILD_TAG }}
           cache_id: ${{ matrix.BUILD_TAG }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: ./build.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: artifacts-${{ matrix.os }}${{ matrix.BUILD_TAG }}
           path: ./artefacts/*
@@ -58,7 +56,7 @@ jobs:
           keep_latest: 5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           pattern: artifacts-*
           merge-multiple: true
