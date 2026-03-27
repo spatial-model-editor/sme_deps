@@ -5,7 +5,6 @@ set -e -x
 echo "SME_DEPS_COMMON_VERSION: ${SME_DEPS_COMMON_VERSION}"
 echo "DUNE_COPASI_VERSION: ${DUNE_COPASI_VERSION}"
 echo "PATH: $PATH"
-echo "MSYSTEM: $MSYSTEM"
 
 # temporary workaround for cmake 4.0 complaining about symengine min cmake version being too low:
 export CMAKE_POLICY_VERSION_MINIMUM=3.5
@@ -27,11 +26,6 @@ export CMAKE_DISABLE_FIND_PACKAGE_parafields=ON
 export DUNE_COPASI_DISABLE_FETCH_PACKAGE_parafields=ON
 # build dune-copasi with 2d and 3d support
 export DUNE_COPASI_GRID_DIMENSIONS='"2;3"'
-if [[ $MSYSTEM ]]; then
-    # on windows add flags to support large object files
-    # https://stackoverflow.com/questions/16596876/object-file-has-too-many-sections
-    export CMAKE_CXX_FLAGS='"-fvisibility=hidden -Wa,-mbig-obj -D_GLIBCXX_USE_TBB_PAR_BACKEND=0 -DNDEBUG"'
-fi
 if [[ $BUILD_TAG == "_tsan" ]]; then
     export CMAKE_CXX_FLAGS='"-fvisibility=hidden -D_GLIBCXX_USE_TBB_PAR_BACKEND=0 -DNDEBUG -fsanitize=thread -fno-omit-frame-pointer"'
 fi

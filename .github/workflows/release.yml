@@ -1,7 +1,7 @@
 name: Release Builds
 on: push
 env:
-  DUNE_COPASI_VERSION: "test_pdelab_fix"
+  DUNE_COPASI_VERSION: "msvc"
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: true
@@ -22,20 +22,25 @@ jobs:
           - os: "macos-14"
             shell: "bash"
           - os: "windows-2022"
-            shell: "msys2 {0}"
+            shell: "pwsh"
     defaults:
       run:
         shell: ${{ matrix.shell }}
     env:
       BUILD_TAG: ${{ matrix.BUILD_TAG }}
     steps:
-      - uses: spatial-model-editor/setup-ci@2026.03.23
+      - uses: spatial-model-editor/setup-ci@2026.03.27
         with:
-          sme_deps_common: "2026.03.24"
+          sme_deps_common: "2026.03.27"
           build_tag: ${{ matrix.BUILD_TAG }}
           cache_id: ${{ matrix.BUILD_TAG }}
       - uses: actions/checkout@v6
-      - run: ./build.sh
+      - name: Build script
+        if: runner.os != 'Windows'
+        run: ./build.sh
+      - name: Build script
+        if: runner.os == 'Windows'
+        run: ./build.ps1
       - uses: actions/upload-artifact@v7
         with:
           name: artifacts-${{ matrix.os }}${{ matrix.BUILD_TAG }}

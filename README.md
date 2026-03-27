@@ -12,13 +12,13 @@ Get the latest versions here:
 - linux (clang 19 / Ubuntu 22.04): [sme_deps_linux.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_linux.tgz)
 - linux-arm64 (clang 19 / Ubuntu 22.04): [sme_deps_linux-arm64.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_linux-arm64.tgz)
 - osx-arm64 (Xcode 16.1 / macOS 14): [sme_deps_osx-arm64.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_osx-arm64.tgz)
-- win64-mingw (mingw-w64-x86_64-gcc 14): [sme_deps_win64-mingw.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_win64-mingw.tgz)
+- win64 (MSVC / Visual Studio 2022): [sme_deps_win64.tgz](https://github.com/spatial-model-editor/sme_deps/releases/latest/download/sme_deps_win64.tgz)
 
 ## Updating this repo
 
 Any tagged commit will result in a github release.
 
-To make a new release, update the library version numbers in [release.yml](https://github.com/spatial-model-editor/sme_deps/blob/main/.github/workflows/release.yml#L6) (and the build script [build.sh](https://github.com/spatial-model-editor/sme_deps/blob/main/build.sh) if necessary), then commit the changes:
+To make a new release, update the library version numbers in [release.yml](https://github.com/spatial-model-editor/sme_deps/blob/main/.github/workflows/release.yml#L6) (and the build scripts [build.sh](https://github.com/spatial-model-editor/sme_deps/blob/main/build.sh) / [build.ps1](https://github.com/spatial-model-editor/sme_deps/blob/main/build.ps1) if necessary), then commit the changes:
 
 ```
 git commit -am "revision update"
