@@ -23,6 +23,8 @@ jobs:
             shell: "bash"
           - os: "windows-2022"
             shell: "pwsh"
+          - os: "windows-11-arm"
+            shell: "pwsh"
     defaults:
       run:
         shell: ${{ matrix.shell }}

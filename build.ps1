@@ -144,6 +144,7 @@ $duneDependenciesDir = Join-Path $workDir "dune-dependencies"
 
 Set-DefaultEnvironmentValue -Name "CMAKE_POLICY_VERSION_MINIMUM" -Value "3.5"
 Set-DefaultEnvironmentValue -Name "BUILD_SHARED_LIBS" -Value "OFF"
+Set-DefaultEnvironmentValue -Name "DUNE_USE_ONLY_STATIC_LIBS" -Value "ON"
 Set-DefaultEnvironmentValue -Name "BUILD_TESTING" -Value "ON"
 Set-DefaultEnvironmentValue -Name "CMAKE_BUILD_TYPE" -Value "Release"
 Set-DefaultEnvironmentValue -Name "CMAKE_C_COMPILER" -Value "cl"
