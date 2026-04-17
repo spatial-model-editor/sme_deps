@@ -31,9 +31,9 @@ jobs:
     env:
       BUILD_TAG: ${{ matrix.BUILD_TAG }}
     steps:
-      - uses: spatial-model-editor/setup-ci@2026.03.27
+      - uses: spatial-model-editor/setup-ci@2026.03.30
         with:
-          sme_deps_common: "2026.03.27"
+          sme_deps_common: "2026.04.17"
           build_tag: ${{ matrix.BUILD_TAG }}
           cache_id: ${{ matrix.BUILD_TAG }}
       - uses: actions/checkout@v6

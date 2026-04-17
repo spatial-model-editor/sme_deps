@@ -152,7 +152,6 @@ Set-DefaultEnvironmentValue -Name "CMAKE_CXX_COMPILER" -Value "cl"
 Set-DefaultEnvironmentValue -Name "CMAKE_C_COMPILER_LAUNCHER" -Value "ccache"
 Set-DefaultEnvironmentValue -Name "CMAKE_CXX_COMPILER_LAUNCHER" -Value "ccache"
 Set-DefaultEnvironmentValue -Name "CMAKE_MSVC_RUNTIME_LIBRARY" -Value 'MultiThreaded$<$<CONFIG:Debug>:Debug>'
-Set-DefaultEnvironmentValue -Name "CMAKE_CXX_FLAGS" -Value "/permissive- /Zc:__cplusplus /Zc:preprocessor /bigobj /EHsc /external:anglebrackets"
 Set-DefaultEnvironmentValue -Name "CMAKE_DISABLE_FIND_PACKAGE_MPI" -Value "ON"
 Set-DefaultEnvironmentValue -Name "CMAKE_GENERATOR" -Value "Ninja"
 Set-DefaultEnvironmentValue -Name "DUNE_ENABLE_PYTHONBINDINGS" -Value "OFF"
