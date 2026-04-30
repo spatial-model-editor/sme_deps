@@ -31,8 +31,19 @@ if [[ $BUILD_TAG == "_tsan" ]]; then
     export CMAKE_CXX_FLAGS='"-fvisibility=hidden -D_GLIBCXX_USE_TBB_PAR_BACKEND=0 -DNDEBUG -fsanitize=thread -fno-omit-frame-pointer"'
 fi
 
-# clone dune-copasi
-git clone -b ${DUNE_COPASI_VERSION} --depth 1 https://gitlab.dune-project.org/copasi/dune-copasi.git
+# clone dune-copasi (with retries for flaky gitlab)
+for attempt in 1 2 3 4; do
+    if git clone -b ${DUNE_COPASI_VERSION} --depth 1 https://gitlab.dune-project.org/copasi/dune-copasi.git; then
+        break
+    fi
+    if [ $attempt -eq 4 ]; then
+        echo "git clone failed after 4 attempts"
+        exit 1
+    fi
+    rm -rf dune-copasi
+    echo "Attempt $attempt failed, retrying in $((attempt * 5)) seconds..."
+    sleep $((attempt * 5))
+done
 cd dune-copasi
 # get test data files
 git lfs install
