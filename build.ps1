@@ -108,20 +108,6 @@ function Repair-GitSymlinks {
   }
 }
 
-function Patch-DunePythonCommonMacros {
-  param([Parameter(Mandatory)] [string]$InstallPrefix)
-
-  $macrosPath = Join-Path $InstallPrefix "share\dune\cmake\modules\DunePythonCommonMacros.cmake"
-  if (-not (Test-Path -LiteralPath $macrosPath)) {
-    throw "Could not find DunePythonCommonMacros.cmake at $macrosPath"
-  }
-
-  $contents = Get-Content -LiteralPath $macrosPath -Raw
-  $contents = $contents -replace '(?m)^(\s*)find_package\(Python', '$1#find_package(Python'
-  $contents = $contents -replace '(?m)^(\s*)dune_python_find_package\(', '$1#dune_python_find_package('
-  Set-Content -LiteralPath $macrosPath -Value $contents -NoNewline
-}
-
 $requiredEnvVars = @(
   "DUNE_COPASI_VERSION",
   "INSTALL_PREFIX",
@@ -142,7 +128,6 @@ $workDir = Resolve-AbsolutePath (Join-Path $workRoot "sme-deps-dune-copasi")
 $duneCopasiDir = Join-Path $workDir "dune-copasi"
 $duneDependenciesDir = Join-Path $workDir "dune-dependencies"
 
-Set-DefaultEnvironmentValue -Name "CMAKE_POLICY_VERSION_MINIMUM" -Value "3.5"
 Set-DefaultEnvironmentValue -Name "BUILD_SHARED_LIBS" -Value "OFF"
 Set-DefaultEnvironmentValue -Name "DUNE_USE_ONLY_STATIC_LIBS" -Value "ON"
 Set-DefaultEnvironmentValue -Name "BUILD_TESTING" -Value "ON"
@@ -217,8 +202,6 @@ if (-not (Test-Path -LiteralPath $buildScript)) {
 }
 
 & $buildScript -RepoRoot $duneCopasiDir -WorkDir $duneDependenciesDir -InstallPrefix $installPrefix -CleanWorkDir
-
-Patch-DunePythonCommonMacros -InstallPrefix $installPrefix
 
 if (Get-Command ccache -ErrorAction SilentlyContinue) {
   Invoke-ExternalCommand ccache @("--show-stats")
