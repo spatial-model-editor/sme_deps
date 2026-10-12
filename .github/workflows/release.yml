@@ -2,6 +2,20 @@ name: Release Builds
 on: push
 env:
   DUNE_COPASI_VERSION: "msvc"
+  # temporary git redirects as gitlab.dune-project.org seems to be blocking github CI runners:
+  GIT_CONFIG_COUNT: 6
+  GIT_CONFIG_KEY_0: "url.https://github.com/dune-project/.insteadOf"
+  GIT_CONFIG_VALUE_0: "https://gitlab.dune-project.org/core/"
+  GIT_CONFIG_KEY_1: "url.https://github.com/dune-project/.insteadOf"
+  GIT_CONFIG_VALUE_1: "https://gitlab.dune-project.org/staging/"
+  GIT_CONFIG_KEY_2: "url.https://github.com/spatial-model-editor/dune-pdelab.git.insteadOf"
+  GIT_CONFIG_VALUE_2: "https://gitlab.dune-project.org/pdelab/dune-pdelab.git"
+  GIT_CONFIG_KEY_3: "url.https://github.com/spatial-model-editor/dune-multidomaingrid.git.insteadOf"
+  GIT_CONFIG_VALUE_3: "https://gitlab.dune-project.org/extensions/dune-multidomaingrid.git"
+  GIT_CONFIG_KEY_4: "url.https://github.com/spatial-model-editor/dune-multidomaingrid.git.insteadOf"
+  GIT_CONFIG_VALUE_4: "https://gitlab.dune-project.org/liam.keegan/dune-multidomaingrid.git"
+  GIT_CONFIG_KEY_5: "url.https://github.com/dune-copasi/dune-copasi.git.insteadOf"
+  GIT_CONFIG_VALUE_5: "https://gitlab.dune-project.org/copasi/dune-copasi.git"
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: true
